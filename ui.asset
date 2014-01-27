@@ -1,0 +1,8 @@
+graphics/button.png, LOGIN_UP, 0, 0, 140, 80
+graphics/button.png, LOGIN_DOWN, 141, 0, 140, 80
+graphics/button.png, REGISTER_UP, 0, 81, 140, 80
+graphics/button.png, REGISTER_DOWN, 141, 81, 140, 80
+graphics/button.png, TEXT_CURSOR, 0, 200, 4, 40
+graphics/login.png, LOGIN_BACKGROUND, 0, 0, 800, 480
+graphics/touchpad.png, TOUCHPAD_BACKGROUND, 0, 0, 151, 151
+graphics/touchpad.png, TOUCHPAD_KNOB, 151, 0, 60, 60

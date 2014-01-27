@@ -1,0 +1,9 @@
+graphics/head.png, HEAD, 0, 0, 360, 37
+graphics/face.png, FACE, 0, 0, 360, 37
+graphics/body.png, BODY, 0, 0, 360, 37
+graphics/hand.png, HAND, 0, 0, 360, 30
+graphics/leg.png,  LEG,  0, 0, 360, 30
+graphics/leg_step_1.png, LEG_STEP1, 0, 0, 360, 30
+graphics/leg_step_2.png, LEG_STEP2, 0, 0, 360, 30
+graphics/leg_step_3.png, LEG_STEP3, 0, 0, 360, 30
+graphics/leg_step_4.png, LEG_STEP4, 0, 0, 360, 30
