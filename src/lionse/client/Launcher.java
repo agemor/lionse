@@ -1,4 +1,4 @@
-package com.lionse;
+package lionse.client;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
@@ -15,9 +15,10 @@ public class Launcher {
 	public static final int[] GALAXYNOTE = { 800, 1280 };
 	public static final int[] OPTIMUSLTE = { 720, 1280 };
 	public static final int[] VEGALTE = { 800, 1280 };
-	
-	public static int[][] DEVICE = {IPHONE3G, IPHONE4G, IPAD, GALAXYS2, GALAXYNOTE, OPTIMUSLTE, VEGALTE};
-	
+
+	public static int[][] DEVICE = { IPHONE3G, IPHONE4G, IPAD, GALAXYS2, GALAXYNOTE, OPTIMUSLTE,
+			VEGALTE };
+
 	public static int[] device = DEVICE[3];
 
 	public static void main(String[] args) {

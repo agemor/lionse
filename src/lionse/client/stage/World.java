@@ -1,4 +1,4 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -7,16 +7,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.lionse.Display;
-import com.lionse.asset.Asset;
-import com.lionse.debug.Debugger;
-import com.lionse.net.Server;
-import com.lionse.net.UserEvent;
-import com.lionse.net.user.User;
-import com.lionse.stage.unit.Natural;
-import com.lionse.ui.LoginUI;
-import com.lionse.ui.UI;
-import com.lionse.ui.WorldUI;
+import lionse.client.Display;
+import lionse.client.asset.Asset;
+import lionse.client.debug.Debugger;
+import lionse.client.net.Server;
+import lionse.client.net.UserEvent;
+import lionse.client.net.user.User;
+import lionse.client.stage.unit.Natural;
+import lionse.client.ui.LoginUI;
+import lionse.client.ui.UI;
+import lionse.client.ui.WorldUI;
 
 public class World implements Screen, UserEvent {
 

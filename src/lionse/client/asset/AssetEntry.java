@@ -1,4 +1,4 @@
-package com.lionse.asset;
+package lionse.client.asset;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,9 +17,12 @@ import com.badlogic.gdx.Gdx;
 public class AssetEntry {
 
 	// 키보드 위치 상수
-	public static String[] KEYBOARD = { "1/g`2/g`3/g`4/g`5/g`6/g`7/g`8/g`9/g`0/g`IME-K/b`IME-E/b`SET-UP/u`SET-DOWN/b`BACKSPACE/r",
-			"~/g`!/g`@/g`^/g`(/g`)/g`-/g`?/g`,/g`./g`NUM/b`CHR/b`SPACE/s", "ㄱ`ㄴ`ㄷ`ㄹ`ㅁ`ㅂ`ㅅ`ㅇ`ㅈ`ㅊ`ㅋ`ㅌ`ㅍ`ㅎ`ㅃ/u", "ㅛ`ㅕ`ㅑ`ㅐ`ㅔ`ㅗ`ㅓ`ㅏ`ㅣ`ㅠ`ㅜ`ㅡ`ㅉ/u`ㄸ/u`ㄲ/u",
-			"A`B`C`D`E`F`G`H`I`J`K`L`M`N`O", "P`Q`R`S`T`U`V`W`X`Y`Z`ㅆ/u`ㅒ/u`ㅖ/u", "a`b`c`d`e`f`g`h`i`j`k`l`m`n`o", "p`q`r`s`t`u`v`w`x`y`z" };
+	public static String[] KEYBOARD = {
+			"1/g`2/g`3/g`4/g`5/g`6/g`7/g`8/g`9/g`0/g`IME-K/b`IME-E/b`SET-UP/u`SET-DOWN/b`BACKSPACE/r",
+			"~/g`!/g`@/g`^/g`(/g`)/g`-/g`?/g`,/g`./g`NUM/b`CHR/b`SPACE/s",
+			"ㄱ`ㄴ`ㄷ`ㄹ`ㅁ`ㅂ`ㅅ`ㅇ`ㅈ`ㅊ`ㅋ`ㅌ`ㅍ`ㅎ`ㅃ/u", "ㅛ`ㅕ`ㅑ`ㅐ`ㅔ`ㅗ`ㅓ`ㅏ`ㅣ`ㅠ`ㅜ`ㅡ`ㅉ/u`ㄸ/u`ㄲ/u",
+			"A`B`C`D`E`F`G`H`I`J`K`L`M`N`O", "P`Q`R`S`T`U`V`W`X`Y`Z`ㅆ/u`ㅒ/u`ㅖ/u",
+			"a`b`c`d`e`f`g`h`i`j`k`l`m`n`o", "p`q`r`s`t`u`v`w`x`y`z" };
 
 	// 기본 자원 파일 경로
 	public static String UI = "ui.asset";
@@ -58,15 +61,17 @@ public class AssetEntry {
 
 					// 기존 엔트리에 텍스처 추가
 					Entry entry = container.get(buffer[0]);
-					entry.putTexture(buffer[1], Integer.parseInt(buffer[2]), Integer.parseInt(buffer[3]), Integer.parseInt(buffer[4]),
-							Integer.parseInt(buffer[5]));
+					entry.putTexture(buffer[1], Integer.parseInt(buffer[2]), Integer
+							.parseInt(buffer[3]), Integer.parseInt(buffer[4]), Integer
+							.parseInt(buffer[5]));
 
 				} else {
 
 					// 새 엔트리 만들기
 					Entry entry = new Entry(buffer[0]);
-					entry.putTexture(buffer[1], Integer.parseInt(buffer[2]), Integer.parseInt(buffer[3]), Integer.parseInt(buffer[4]),
-							Integer.parseInt(buffer[5]));
+					entry.putTexture(buffer[1], Integer.parseInt(buffer[2]), Integer
+							.parseInt(buffer[3]), Integer.parseInt(buffer[4]), Integer
+							.parseInt(buffer[5]));
 
 					// 컨테이너에 엔트리를 추가
 					container.put(buffer[0], entry);

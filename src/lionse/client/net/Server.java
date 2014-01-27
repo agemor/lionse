@@ -1,4 +1,4 @@
-package com.lionse.net;
+package lionse.client.net;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,15 +8,15 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import com.lionse.asset.Asset;
-import com.lionse.debug.Debugger;
-import com.lionse.net.user.User;
-import com.lionse.net.user.UserList;
-import com.lionse.security.crypto.BASE64;
-import com.lionse.security.crypto.SHA256;
-import com.lionse.stage.Path;
-import com.lionse.stage.Stage.Point;
-import com.lionse.stage.Character;
+import lionse.client.asset.Asset;
+import lionse.client.debug.Debugger;
+import lionse.client.net.user.User;
+import lionse.client.net.user.UserList;
+import lionse.client.security.crypto.BASE64;
+import lionse.client.security.crypto.SHA256;
+import lionse.client.stage.Path;
+import lionse.client.stage.Stage.Point;
+import lionse.client.stage.Character;
 
 public class Server {
 
@@ -115,7 +115,8 @@ public class Server {
 		if (!connected)
 			return;
 		state = REGISTER_TRY;
-		send(Header.REGISTER + H_L + id + H_L + SHA256.digest(password) + H_L + BASE64.encodeString(character) + H_L + email);
+		send(Header.REGISTER + H_L + id + H_L + SHA256.digest(password) + H_L
+				+ BASE64.encodeString(character) + H_L + email);
 
 	}
 
@@ -152,7 +153,8 @@ public class Server {
 		public void run() {
 			try {
 
-				reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), ENCODING));
+				reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), ENCODING));
 
 				while (true) {
 					String data = reader.readLine();
@@ -220,7 +222,8 @@ public class Server {
 						serverEventTarget.join(true);
 					Debugger.log("Join succeed.");
 					// join failed -> wrong session
-				} else if (header.equals(Header.ERROR) && buffer[1].equals(ErrorCode.CANNOT_FIND_SESSION)) {
+				} else if (header.equals(Header.ERROR)
+						&& buffer[1].equals(ErrorCode.CANNOT_FIND_SESSION)) {
 					if (serverEventTarget != null)
 						serverEventTarget.join(false);
 					Debugger.log("Join failed.");
@@ -259,8 +262,10 @@ public class Server {
 				user.body = Integer.parseInt(buffer[4]);
 				user.weapon = Integer.parseInt(buffer[5]);
 				user.stage = me.stage;
-				user.position = new Point(Integer.parseInt(buffer[6]), Integer.parseInt(buffer[7]), Integer.parseInt(buffer[8]));
-				user.character = new Character(user.name, Asset.Character.get("HEAD"), Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
+				user.position = new Point(Integer.parseInt(buffer[6]), Integer.parseInt(buffer[7]),
+						Integer.parseInt(buffer[8]));
+				user.character = new Character(user.name, Asset.Character.get("HEAD"),
+						Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
 				users.add(user);
 
 				// dispatch event
@@ -291,8 +296,10 @@ public class Server {
 				me.body = Integer.parseInt(buffer[8]);
 				me.weapon = Integer.parseInt(buffer[9]);
 				me.stage = Integer.parseInt(buffer[10]);
-				me.position = new Point(Integer.parseInt(buffer[11]), Integer.parseInt(buffer[12]), Integer.parseInt(buffer[13]));
-				me.character = new Character(me.name, Asset.Character.get("HEAD"), Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
+				me.position = new Point(Integer.parseInt(buffer[11]), Integer.parseInt(buffer[12]),
+						Integer.parseInt(buffer[13]));
+				me.character = new Character(me.name, Asset.Character.get("HEAD"),
+						Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
 				me.character.position = me.position;
 				me.character.me = true;
 				users.add(me);
@@ -322,8 +329,10 @@ public class Server {
 					user.body = Integer.parseInt(chunk[3]);
 					user.weapon = Integer.parseInt(chunk[4]);
 					user.stage = me.stage;
-					user.position = new Point(Integer.parseInt(chunk[5]), Integer.parseInt(chunk[6]), Integer.parseInt(chunk[7]));
-					user.character = new Character(user.name, Asset.Character.get("HEAD"), Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
+					user.position = new Point(Integer.parseInt(chunk[5]),
+							Integer.parseInt(chunk[6]), Integer.parseInt(chunk[7]));
+					user.character = new Character(user.name, Asset.Character.get("HEAD"),
+							Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
 
 					users.add(user);
 				}
@@ -357,14 +366,16 @@ public class Server {
 				user.state = User.MOVE;
 
 				// 이동을 시작하였거나, 방향을 전환한 좌표
-				Point point = new Point(Float.valueOf(buffer[4]), Float.valueOf(buffer[5]), Float.valueOf(buffer[6]));
+				Point point = new Point(Float.valueOf(buffer[4]), Float.valueOf(buffer[5]),
+						Float.valueOf(buffer[6]));
 
 				// 보관 중이거나 실행 중인 방향 이동 명령을 비활성화시킨다.
 				if (user.movePath != null)
 					user.movePath.disable();
 
 				// 좌표를 체크해서 이동-정지 명령인지, 이동 명령인지 구분
-				if (Math.sqrt(Math.pow(point.x - user.character.position.x, 2) + Math.pow(point.y - user.character.position.y, 2)) > 3) {
+				if (Math.sqrt(Math.pow(point.x - user.character.position.x, 2)
+						+ Math.pow(point.y - user.character.position.y, 2)) > 3) {
 
 					// 이동-정지 명령으로 판명. 오차범위가 3보다 크다.
 
@@ -380,9 +391,11 @@ public class Server {
 
 					if (xScale > yScale) { // x변위가 더 크다. y속도에 감소값을 곱해준다.
 						path.velocityX = point.x - user.character.position.x > 0 ? 1 : -1;
-						path.velocityY = (point.y - user.character.position.y > 0 ? 1 : -1) * yScale / xScale;
+						path.velocityY = (point.y - user.character.position.y > 0 ? 1 : -1)
+								* yScale / xScale;
 					} else {
-						path.velocityX = (point.x - user.character.position.x > 0 ? 1 : -1) * xScale / yScale;
+						path.velocityX = (point.x - user.character.position.x > 0 ? 1 : -1)
+								* xScale / yScale;
 						path.velocityY = point.y - user.character.position.y > 0 ? 1 : -1;
 					}
 
@@ -411,9 +424,11 @@ public class Server {
 				user.movePath.disable();
 
 				// 이동을 멈춘 좌표
-				Point point = new Point(Float.valueOf(buffer[2]), Float.valueOf(buffer[3]), Float.valueOf(buffer[4]));
+				Point point = new Point(Float.valueOf(buffer[2]), Float.valueOf(buffer[3]),
+						Float.valueOf(buffer[4]));
 				// 한계값 체크. (서버에 캐릭터의 실위치가 소수부분 없이 전송이 되기 때문에 그냥 비교하면 오차가 생긴다)
-				if (Math.sqrt(Math.pow(point.x - user.character.position.x, 2) + Math.pow(point.y - user.character.position.y, 2)) > 3) {
+				if (Math.sqrt(Math.pow(point.x - user.character.position.x, 2)
+						+ Math.pow(point.y - user.character.position.y, 2)) > 3) {
 					// 이동-정지 명령으로 판명. 오차범위가 3보다 크다.
 					Path path = new Path(user.character.getDirection(point), point);
 
@@ -423,9 +438,11 @@ public class Server {
 
 					if (xScale > yScale) { // x변위가 더 크다. y속도에 감소값을 곱해준다.
 						path.velocityX = point.x - user.character.position.x > 0 ? 1 : -1;
-						path.velocityY = (point.y - user.character.position.y > 0 ? 1 : -1) * yScale / xScale;
+						path.velocityY = (point.y - user.character.position.y > 0 ? 1 : -1)
+								* yScale / xScale;
 					} else {
-						path.velocityX = (point.x - user.character.position.x > 0 ? 1 : -1) * xScale / yScale;
+						path.velocityX = (point.x - user.character.position.x > 0 ? 1 : -1)
+								* xScale / yScale;
 						path.velocityY = point.y - user.character.position.y > 0 ? 1 : -1;
 					}
 

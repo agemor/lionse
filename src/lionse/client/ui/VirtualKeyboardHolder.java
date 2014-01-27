@@ -1,4 +1,4 @@
-package com.lionse.ui;
+package lionse.client.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.OnscreenKeyboard;
 

@@ -1,11 +1,11 @@
-package com.lionse.net.user;
+package lionse.client.net.user;
 
-import com.lionse.net.Header;
-import com.lionse.net.Server;
-import com.lionse.security.crypto.BASE64;
-import com.lionse.stage.Path;
-import com.lionse.stage.Stage.Point;
-import com.lionse.stage.Character;
+import lionse.client.net.Header;
+import lionse.client.net.Server;
+import lionse.client.security.crypto.BASE64;
+import lionse.client.stage.Path;
+import lionse.client.stage.Stage.Point;
+import lionse.client.stage.Character;
 
 public class User {
 
@@ -24,13 +24,12 @@ public class User {
 	public int money;
 	public int stage;
 	public Point position;
-	
+
 	// user equipments
 	public int head;
 	public int face;
 	public int body;
 	public int weapon;
-	
 
 	// in-game data
 	public String message;

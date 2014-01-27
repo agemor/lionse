@@ -1,10 +1,10 @@
-package com.lionse.stage.unit;
+package lionse.client.stage.unit;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.lionse.Display;
-import com.lionse.stage.Stage.Point;
-import com.lionse.stage.Stage;
-import com.lionse.stage.Unit;
+import lionse.client.Display;
+import lionse.client.stage.Stage.Point;
+import lionse.client.stage.Stage;
+import lionse.client.stage.Unit;
 
 public class Natural extends Unit {
 

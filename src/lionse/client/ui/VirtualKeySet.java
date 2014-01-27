@@ -1,7 +1,7 @@
-package com.lionse.ui;
+package lionse.client.ui;
 
-import com.lionse.asset.Asset;
-import com.lionse.stage.Stage.Point;
+import lionse.client.asset.Asset;
+import lionse.client.stage.Stage.Point;
 
 public class VirtualKeySet {
 

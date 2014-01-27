@@ -1,4 +1,4 @@
-package com.lionse.net;
+package lionse.client.net;
 
 public class Header {
 	public final static String SESSION = "s"; // session

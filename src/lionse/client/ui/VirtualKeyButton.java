@@ -1,9 +1,9 @@
-package com.lionse.ui;
+package lionse.client.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.lionse.stage.Renderable;
-import com.lionse.stage.Stage.Point;
+import lionse.client.stage.Renderable;
+import lionse.client.stage.Stage.Point;
 
 public class VirtualKeyButton implements Renderable {
 	// padding (for interpretation)
@@ -75,7 +75,8 @@ public class VirtualKeyButton implements Renderable {
 
 	public boolean interacts(float x, float y) {
 		// Debugger.log(position.x + PADDING_X + "/" + position.y);
-		if (position.x + PADDING_X < x && x < position.x + PADDING_X + keyWidth && position.y + PADDING_Y - hitArea < y && y < position.y + 45 + PADDING_Y) {
+		if (position.x + PADDING_X < x && x < position.x + PADDING_X + keyWidth
+				&& position.y + PADDING_Y - hitArea < y && y < position.y + 45 + PADDING_Y) {
 			return true;
 		}
 		return false;

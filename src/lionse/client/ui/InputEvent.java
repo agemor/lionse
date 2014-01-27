@@ -1,4 +1,4 @@
-package com.lionse.ui;
+package lionse.client.ui;
 
 public class InputEvent {
 

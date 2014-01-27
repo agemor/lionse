@@ -1,4 +1,4 @@
-package com.lionse.net.user;
+package lionse.client.net.user;
 
 import java.util.HashMap;
 import java.util.Map;

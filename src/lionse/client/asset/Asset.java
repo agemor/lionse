@@ -1,4 +1,4 @@
-package com.lionse.asset;
+package lionse.client.asset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.lionse.asset.AssetEntry.Entry;
-import com.lionse.ui.VirtualKeyboard;
+import lionse.client.asset.AssetEntry.Entry;
+import lionse.client.ui.VirtualKeyboard;
 
 /**
  * 
@@ -104,7 +104,8 @@ public class Asset {
 				String color = chunk.length > 1 ? "c" + chunk[1] : "cw";
 				keyboardBasement.put(chunk[0], keyboard.get(color));
 				if (chunk[0].equals("SPACE")) {
-					TextureRegion region = new TextureRegion(texture, 61 * 12, 55 * 1, 60 * 3 + 1, 50);
+					TextureRegion region = new TextureRegion(texture, 61 * 12, 55 * 1, 60 * 3 + 1,
+							50);
 					keyboard.put("SPACE", region);
 				} else {
 					TextureRegion region = new TextureRegion(texture, 61 * j, 55 * i, 61, 50);
@@ -141,7 +142,8 @@ public class Asset {
 				for (int j = 0; j < entry.identifier.length; j++) {
 					if (entry.identifier[j] == null)
 						break;
-					TextureRegion textureRegion = new TextureRegion(texture, entry.vertex[j][0], entry.vertex[j][1], entry.vertex[j][2], entry.vertex[j][3]);
+					TextureRegion textureRegion = new TextureRegion(texture, entry.vertex[j][0],
+							entry.vertex[j][1], entry.vertex[j][2], entry.vertex[j][3]);
 					ui.add(textureRegion);
 
 					// 자원 Add 부분
@@ -174,7 +176,8 @@ public class Asset {
 				for (int j = 0; j < entry.identifier.length; j++) {
 					if (entry.identifier[j] == null)
 						break;
-					TextureRegion textureRegion = new TextureRegion(texture, entry.vertex[j][0], entry.vertex[j][1], entry.vertex[j][2], entry.vertex[j][3]);
+					TextureRegion textureRegion = new TextureRegion(texture, entry.vertex[j][0],
+							entry.vertex[j][1], entry.vertex[j][2], entry.vertex[j][3]);
 					game.add(splitTexture(textureRegion));
 
 					// 자원 Add 부분
@@ -209,7 +212,8 @@ public class Asset {
 				for (int j = 0; j < entry.identifier.length; j++) {
 					if (entry.identifier[j] == null)
 						break;
-					TextureRegion textureRegion = new TextureRegion(texture, entry.vertex[j][0], entry.vertex[j][1], entry.vertex[j][2], entry.vertex[j][3]);
+					TextureRegion textureRegion = new TextureRegion(texture, entry.vertex[j][0],
+							entry.vertex[j][1], entry.vertex[j][2], entry.vertex[j][3]);
 					character.add(splitTexture(textureRegion));
 
 					// 자원 Add 부분

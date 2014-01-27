@@ -1,16 +1,16 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.lionse.Display;
-import com.lionse.asset.Asset;
-import com.lionse.debug.Debugger;
-import com.lionse.net.Header;
-import com.lionse.net.Server;
-import com.lionse.stage.Stage.Point;
+import lionse.client.Display;
+import lionse.client.asset.Asset;
+import lionse.client.debug.Debugger;
+import lionse.client.net.Header;
+import lionse.client.net.Server;
+import lionse.client.stage.Stage.Point;
 
 public class Character implements Renderable {
 
@@ -22,8 +22,9 @@ public class Character implements Renderable {
 	public static final float C_HAND = 29 * RESOLUTION;
 	public static final float C_LEG = 30 * RESOLUTION;
 
-	public static float[] SINE_WAVE = { 0, 0.27f, 0.52f, 0.74f, 0.89f, 0.98f, 0.99f, 0.93f, 0.79f, 0.59f, 0.35f, 0.08f, -0.19f, -0.45f, -0.67f, -0.85f, -0.96f,
-			-0.99f, -0.95f, -0.84f, -0.66f, -0.43f, -0.17f };
+	public static float[] SINE_WAVE = { 0, 0.27f, 0.52f, 0.74f, 0.89f, 0.98f, 0.99f, 0.93f, 0.79f,
+			0.59f, 0.35f, 0.08f, -0.19f, -0.45f, -0.67f, -0.85f, -0.96f, -0.99f, -0.95f, -0.84f,
+			-0.66f, -0.43f, -0.17f };
 
 	public boolean me = false;
 
@@ -107,39 +108,50 @@ public class Character implements Renderable {
 		if (moving) {
 			switch (step) {
 			case 0:
-				spriteBatch.draw(texture_leg_step1[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step1[direction], position.x, Display.HEIGHT
+						- (position.y + C_LEG));
 				break;
 			case 1:
-				spriteBatch.draw(texture_leg_step2[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step2[direction], position.x, Display.HEIGHT
+						- (position.y + C_LEG));
 				break;
 			case 2:
-				spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT
+						- (position.y + C_LEG));
 				break;
 			case 3:
-				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT
+						- (position.y + C_LEG));
 				break;
 			case 4:
-				spriteBatch.draw(texture_leg_step4[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step4[direction], position.x, Display.HEIGHT
+						- (position.y + C_LEG));
 				break;
 			case 5:
-				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT
+						- (position.y + C_LEG));
 				break;
 			}
 		} else {
-			spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
+			spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT
+					- (position.y + C_LEG));
 		}
 
 		// draw body
-		spriteBatch.draw(texture_body[direction], position.x, Display.HEIGHT - (position.y + p_body));
+		spriteBatch.draw(texture_body[direction], position.x, Display.HEIGHT
+				- (position.y + p_body));
 
 		// draw hands
-		spriteBatch.draw(texture_hand[direction], position.x, Display.HEIGHT - (position.y + p_hand));
+		spriteBatch.draw(texture_hand[direction], position.x, Display.HEIGHT
+				- (position.y + p_hand));
 
 		// draw face
-		spriteBatch.draw(texture_face[direction], position.x, Display.HEIGHT - (position.y + p_face));
+		spriteBatch.draw(texture_face[direction], position.x, Display.HEIGHT
+				- (position.y + p_face));
 
 		// draw head
-		spriteBatch.draw(texture_head[direction], position.x, Display.HEIGHT - (position.y + p_head));
+		spriteBatch.draw(texture_head[direction], position.x, Display.HEIGHT
+				- (position.y + p_head));
 	}
 
 	@Override
@@ -261,12 +273,14 @@ public class Character implements Renderable {
 
 	public void move(int targetDirection) {
 		this.direction = targetDirection;
-		Server.send(Header.MOVE + Server.H_L + direction + Server.H_L + Math.round(speed) + Server.H_L + Math.round(position.x) + Server.H_L
-				+ Math.round(position.y) + Server.H_L + Math.round(position.z));
+		Server.send(Header.MOVE + Server.H_L + direction + Server.H_L + Math.round(speed)
+				+ Server.H_L + Math.round(position.x) + Server.H_L + Math.round(position.y)
+				+ Server.H_L + Math.round(position.z));
 	}
 
 	public void stop() {
-		Server.send(Header.STOP + Server.H_L + Math.round(position.x) + Server.H_L + Math.round(position.y) + Server.H_L + Math.round(position.z));
+		Server.send(Header.STOP + Server.H_L + Math.round(position.x) + Server.H_L
+				+ Math.round(position.y) + Server.H_L + Math.round(position.z));
 	}
 
 	public int getDirection(Point point) {

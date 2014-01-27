@@ -1,4 +1,4 @@
-package com.lionse;
+package lionse.client;
 
 import com.badlogic.gdx.Gdx;
 

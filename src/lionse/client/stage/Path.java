@@ -1,6 +1,6 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
-import com.lionse.stage.Stage.Point;
+import lionse.client.stage.Stage.Point;
 
 /**
  * 
@@ -30,7 +30,8 @@ public class Path {
 		if (target == null)
 			return false;
 
-		float distance = (float) Math.sqrt(Math.pow(position.x - target.x, 2) + Math.pow(position.y - target.y, 2));
+		float distance = (float) Math.sqrt(Math.pow(position.x - target.x, 2)
+				+ Math.pow(position.y - target.y, 2));
 
 		if (distance < 4 || distance > previousDistance) {
 			return true;

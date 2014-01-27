@@ -1,11 +1,11 @@
-package com.lionse;
+package lionse.client;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.lionse.asset.Asset;
-import com.lionse.net.Server;
-import com.lionse.stage.World;
-import com.lionse.ui.Login;
+import lionse.client.asset.Asset;
+import lionse.client.net.Server;
+import lionse.client.stage.World;
+import lionse.client.ui.Login;
 
 public class Lionse extends Game {
 

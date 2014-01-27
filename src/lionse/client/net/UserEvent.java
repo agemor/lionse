@@ -1,8 +1,8 @@
-package com.lionse.net;
+package lionse.client.net;
 
 import java.util.Map;
 
-import com.lionse.net.user.User;
+import lionse.client.net.user.User;
 
 public interface UserEvent {
 	public void arrive(User user);

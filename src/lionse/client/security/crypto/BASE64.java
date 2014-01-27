@@ -1,4 +1,4 @@
-package com.lionse.security.crypto;
+package lionse.client.security.crypto;
 
 public class BASE64 {
 
@@ -67,7 +67,8 @@ public class BASE64 {
 	 *            The line separator to be used to separate the output lines.
 	 * @return A String containing the Base64 encoded data, broken into lines.
 	 */
-	public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen, String lineSeparator) {
+	public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen,
+			String lineSeparator) {
 		int blockLen = (lineLen * 3) / 4;
 		if (blockLen <= 0)
 			throw new IllegalArgumentException();
@@ -231,7 +232,8 @@ public class BASE64 {
 	 */
 	public static byte[] decode(char[] in, int iOff, int iLen) {
 		if (iLen % 4 != 0)
-			throw new IllegalArgumentException("Length of Base64 encoded input string is not a multiple of 4.");
+			throw new IllegalArgumentException(
+					"Length of Base64 encoded input string is not a multiple of 4.");
 		while (iLen > 0 && in[iOff + iLen - 1] == '=')
 			iLen--;
 		int oLen = (iLen * 3) / 4;

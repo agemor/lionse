@@ -1,15 +1,15 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.lionse.asset.Asset;
-import com.lionse.stage.Stage.Point;
+import lionse.client.asset.Asset;
+import lionse.client.stage.Stage.Point;
 
 public abstract class Unit implements Renderable {
 
 	// unit position
 	public Point position;
 	public int direction = 0;
-	
+
 	// unit type (npc, object, mob...)
 	public int type;
 

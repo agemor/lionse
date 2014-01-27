@@ -1,4 +1,4 @@
-package com.lionse.ui;
+package lionse.client.ui;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad.TouchpadStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.lionse.asset.Asset;
-import com.lionse.debug.Debugger;
-import com.lionse.stage.World;
+import lionse.client.asset.Asset;
+import lionse.client.debug.Debugger;
+import lionse.client.stage.World;
 
 public class WorldUI extends ChangeListener implements UI {
 
@@ -43,7 +43,8 @@ public class WorldUI extends ChangeListener implements UI {
 
 		// 터치패드 스타일 설정
 		touchpadStyle = new TouchpadStyle();
-		touchpadStyle.background = new TextureRegionDrawable(Asset.ui.get(Asset.UI.get("TOUCHPAD_BACKGROUND")));
+		touchpadStyle.background = new TextureRegionDrawable(Asset.ui.get(Asset.UI
+				.get("TOUCHPAD_BACKGROUND")));
 		touchpadStyle.knob = new TextureRegionDrawable(Asset.ui.get(Asset.UI.get("TOUCHPAD_KNOB")));
 
 		// 컴포넌트 구성 요소 초기화

@@ -1,4 +1,4 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,8 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.lionse.Display;
-import com.lionse.asset.Asset;
+import lionse.client.Display;
+import lionse.client.asset.Asset;
 
 public class Stage implements Renderable {
 
@@ -74,7 +74,8 @@ public class Stage implements Renderable {
 				int y = startingY + (Terrain.HEIGHT / 2 * j);
 
 				// set terrain.
-				Terrain grid = new Terrain(x, y, stageEntry.terrainAltitude[i][j], new Terrain.Index(j, i), null);
+				Terrain grid = new Terrain(x, y, stageEntry.terrainAltitude[i][j],
+						new Terrain.Index(j, i), null);
 
 				// determine terrain graphics and altitude.
 				if (stageEntry.terrainType[i][j] == 0) {
@@ -111,7 +112,8 @@ public class Stage implements Renderable {
 		// render terrain
 		for (int i = 0; i < terrain.size(); i++) {
 			Terrain piece = terrain.get(i);
-			spriteBatch.draw(piece.getTexture(), piece.x, Display.HEIGHT - piece.y + piece.z * SCALE_Z);
+			spriteBatch.draw(piece.getTexture(), piece.x, Display.HEIGHT - piece.y + piece.z
+					* SCALE_Z);
 		}
 
 		// render units and characters.

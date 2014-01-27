@@ -1,4 +1,4 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
 public class StageEntry {
 

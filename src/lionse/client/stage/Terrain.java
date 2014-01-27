@@ -1,4 +1,4 @@
-package com.lionse.stage;
+package lionse.client.stage;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 

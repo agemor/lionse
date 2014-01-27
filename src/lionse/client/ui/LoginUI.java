@@ -1,4 +1,4 @@
-package com.lionse.ui;
+package lionse.client.ui;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
@@ -14,10 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.lionse.Display;
-import com.lionse.asset.Asset;
-import com.lionse.debug.Debugger;
-import com.lionse.net.Server;
+import lionse.client.Display;
+import lionse.client.asset.Asset;
+import lionse.client.debug.Debugger;
+import lionse.client.net.Server;
 
 /**
  * 로그인 화면에서 UI 처리 클래스
@@ -188,8 +188,10 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 	// 화면 터치다운시 키보드에 입력
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		VirtualKeyboard.touchDown(screenX * Display.SCALE - (Display.WIDTH * Display.SCALE - Display.WIDTH) / 2, Display.HEIGHT
-				- (screenY * Display.SCALE - (Display.HEIGHT * Display.SCALE - Display.HEIGHT) / 2), pointer, button);
+		VirtualKeyboard
+				.touchDown(screenX * Display.SCALE
+						- (Display.WIDTH * Display.SCALE - Display.WIDTH) / 2, Display.HEIGHT
+						- (screenY * Display.SCALE - (Display.HEIGHT * Display.SCALE - Display.HEIGHT) / 2), pointer, button);
 		return false;
 	}
 

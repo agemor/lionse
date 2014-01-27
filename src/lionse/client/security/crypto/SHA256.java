@@ -1,4 +1,4 @@
-package com.lionse.security.crypto;
+package lionse.client.security.crypto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,8 +12,7 @@ public class SHA256 {
 			byte byteData[] = sha256.digest();
 			StringBuffer buffer = new StringBuffer();
 			for (int i = 0; i < byteData.length; i++) {
-				buffer.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
-						.substring(1));
+				buffer.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
 			SHA = buffer.toString();
 		} catch (NoSuchAlgorithmException e) {
