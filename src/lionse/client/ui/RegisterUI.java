@@ -16,34 +16,37 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import lionse.client.Display;
 import lionse.client.asset.Asset;
-import lionse.client.debug.Debugger;
 import lionse.client.net.Server;
 
 /**
- * 로그인 화면에서 UI 처리 클래스
+ * 
+ * 회원가입 화면에서의 UI처리 클래스
  * 
  * @author 김현준
  * 
  */
-public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
+public class RegisterUI extends ChangeListener implements UI, VirtualKeyEvent {
 
 	// 상위 클래스 참조
-	public Login login;
+	public Register register;
 
 	// 입력 관련 변수
 	public InputMultiplexer multiplexer;
 
-	// UI 텍스처
+	// UI 공통 인수
 	public Image background;
-	public ButtonStyle loginButtonStyle;
 	public ButtonStyle registerButtonStyle;
+	public ButtonStyle cancelButtonStyle;
+	public ButtonStyle duplicationButtonStyle;
 
-	// 로그인 컴포넌트
+	// 회원가입 컴포넌트
 	public Stage component;
 
 	public TextField ID;
 	public TextField PASSWORD;
-	public Button LOGIN;
+	public TextField EMAIL;
+	public TextField CHARACTER;
+	public Button CANCEL;
 	public Button REGISTER;
 
 	// 입력 처리
@@ -56,22 +59,23 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 	// 텍스트 필드 버퍼
 	private String id_buffer = "";
 	private String password_buffer = "";
+	private String email_buffer = "";
+	private String character_buffer = "";
 
-	// 생성자
-	public LoginUI(Login login) {
-		this.login = login;
+	public RegisterUI(Register register) {
+		this.register = register;
 
 		// UI 공통 인수 초기화
-		background = new Image(Asset.UI.get("LOGIN"));
+		background = new Image(Asset.UI.get("REGISTER"));
 
 		// 버튼 스타일 설정
-		loginButtonStyle = new ButtonStyle();
-		loginButtonStyle.up = new TextureRegionDrawable(Asset.UI.get("LOGIN_BUTTON_UP"));
-		loginButtonStyle.down = new TextureRegionDrawable(Asset.UI.get("LOGIN_BUTTON_DOWN"));
-
 		registerButtonStyle = new ButtonStyle();
 		registerButtonStyle.up = new TextureRegionDrawable(Asset.UI.get("REGISTER_BUTTON_UP"));
 		registerButtonStyle.down = new TextureRegionDrawable(Asset.UI.get("REGISTER_BUTTON_DOWN"));
+
+		cancelButtonStyle = new ButtonStyle();
+		cancelButtonStyle.up = new TextureRegionDrawable(Asset.UI.get("CANCEL_BUTTON_UP"));
+		cancelButtonStyle.down = new TextureRegionDrawable(Asset.UI.get("CANCEL_BUTTON_DOWN"));
 
 		// 입력과 컴포넌트 초기화
 		multiplexer = new InputMultiplexer();
@@ -80,38 +84,51 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		// 컴포넌트 구성 요소 초기화
 		ID = new TextField("", Display.TEXTFIELD_STYLE);
 		PASSWORD = new TextField("", Display.TEXTFIELD_STYLE);
-		LOGIN = new Button(loginButtonStyle);
+		EMAIL = new TextField("", Display.TEXTFIELD_STYLE);
+		CHARACTER = new TextField("", Display.TEXTFIELD_STYLE);
+		CANCEL = new Button(cancelButtonStyle);
 		REGISTER = new Button(registerButtonStyle);
 
 		// 구성 요소 설정
 		ID.setOnscreenKeyboard(new VirtualKeyboardHolder());
 		PASSWORD.setOnscreenKeyboard(new VirtualKeyboardHolder());
+		EMAIL.setOnscreenKeyboard(new VirtualKeyboardHolder());
+		CHARACTER.setOnscreenKeyboard(new VirtualKeyboardHolder());
 
-		PASSWORD.setPasswordCharacter('●');
-		PASSWORD.setPasswordMode(true);
-
-		REGISTER.setPosition(600, 250);
-		LOGIN.setPosition(600, 350);
-		ID.setPosition(363, 400);
-		PASSWORD.setPosition(363, 350);
+		ID.setPosition(100, 480 - 50 - 36);
+		PASSWORD.setPosition(500, 480 - 50 - 36);
+		EMAIL.setPosition(540, 480 - 110 - 36);
+		CHARACTER.setPosition(140, 480 - 110 - 36);
 
 		ID.setWidth(200);
 		PASSWORD.setWidth(200);
+		EMAIL.setWidth(200);
+		CHARACTER.setWidth(200);
+		CANCEL.setPosition(520, 480 - 160 - 80);
+		REGISTER.setPosition(320, 480 - 160 - 80);
 
-		LOGIN.addListener(this);
+		CANCEL.addListener(this);
 		REGISTER.addListener(this);
 
-		// 컴포넌트에 추가
 		component.addActor(background);
 		component.addActor(ID);
 		component.addActor(PASSWORD);
-		component.addActor(LOGIN);
+		component.addActor(EMAIL);
+		component.addActor(CHARACTER);
 		component.addActor(REGISTER);
+		component.addActor(CANCEL);
+
 	}
 
-	// 로그인 UI 초기화. 멀티플렉서 설정 등을 함
 	@Override
 	public void initialize() {
+
+		// 입력 초기화
+		id_buffer = "";
+		password_buffer = "";
+		email_buffer = "";
+		character_buffer = "";
+
 		// 멀티플렉서 설정
 		multiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(multiplexer);
@@ -123,63 +140,28 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		multiplexer.addProcessor(component);
 	}
 
-	// 버튼이 눌렸을 때 실행됨
 	@Override
 	public void changed(ChangeEvent event, Actor actor) {
-
-		// 로그인 버튼을 눌렀을 때
-		if (actor == LOGIN) {
-			loading = true;
-			Debugger.log(ID.getText() + "/" + PASSWORD.getText());
-			Server.login(ID.getText().trim(), PASSWORD.getText().trim());
-
-			// 회원가입 버튼을 눌렀을 때
-		} else if (actor == REGISTER) {
-			login.lionse.setScreen(login.lionse.register);
-		}
-
-	}
-
-	// 경고 혹은 오류 메시지 띄우기
-	public void showAlert(String message) {
-		alert = true;
-		alertMessage = message;
-	}
-
-	// 뒤로가기 키(Back-Key) 를 처리
-	@Override
-	public boolean keyDown(int keycode) {
-		if (keycode == Keys.BACK || keycode == Keys.F1) {
-
-			// 뒤로가기 키를 연속 세 번 누르면 게임 종료
-			if (backKeyPressedCount > 0 && alert) {
-				System.exit(0);
-			}
-
-			// 가상 키보드가 있는 상태에서 뒤로가기 키가 눌리면 키보드 끄기
-			if (VirtualKeyboard.display) {
-				VirtualKeyboard.close();
-				backKeyPressedCount = 0;
+		if (actor == REGISTER) {
+			if (!(ID.getText().length() < 2 || PASSWORD.getText().length() < 4 || EMAIL.getText().length() < 4 || CHARACTER.getText().length() < 2)) {
+				loading = true;
+				Server.register(ID.getText().trim(), PASSWORD.getText().trim(), CHARACTER.getText().trim(), EMAIL.getText().trim());
 			} else {
-				showAlert("    한 번 더 누르면 종료합니다.");
-				backKeyPressedCount++;
+				showAlert("제대로 입력되지 않은 정보가 있습니다.");
 			}
+		} else if (actor == CANCEL) {
+			register.lionse.setScreen(register.lionse.login);
 		}
-		return false;
 	}
 
-	// UI 랜더링 명령이 내려오기 전 상태 업데이트 메서드
 	@Override
 	public void update(float delta) {
 		component.act(delta);
 		component.draw();
-
 	}
 
-	// UI 랜더링
 	@Override
 	public void draw(SpriteBatch spriteBatch, float delta) {
-
 		stateTime += delta;
 
 		VirtualKeyboard.update(delta);
@@ -197,41 +179,6 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 			Display.FONT.setColor(Color.WHITE);
 			Display.FONT.draw(spriteBatch, alertMessage, Display.ALERT.getX(), Display.ALERT.getY() + 50);
 		}
-	}
-
-	// 가상 키보드의 버튼이 눌렸을 때
-	@Override
-	public void keyTyped(VirtualKeyButton key) {
-
-		if (loading || alert)
-			return;
-
-		// 아이디 필드에 포커스가 있을 경우
-		if (component.getKeyboardFocus() == ID) {
-			id_buffer = VirtualKeyboard.addBuffer(id_buffer, key);
-			String text = VirtualKeyboard.mix(id_buffer);
-			ID.setText(text);
-			ID.setCursorPosition(text.length() > 0 ? text.length() : 0);
-
-			// 패스워드 필드에 포커스가 있을 경우
-		} else {
-
-			password_buffer = VirtualKeyboard.addBuffer(password_buffer, key);
-			String text = VirtualKeyboard.mix(password_buffer);
-			PASSWORD.setText(text);
-			PASSWORD.setCursorPosition(text.length() > 0 ? text.length() : 0);
-
-			// 패스워드 필드 입력 중 엔터가 눌리면 로그인 처리
-			if (key.letter.equals("ENTER")) {
-				loading = true;
-				Debugger.log(ID.getText() + "/" + PASSWORD.getText());
-				Server.login(ID.getText().trim(), PASSWORD.getText().trim());
-			}
-		}
-	}
-
-	@Override
-	public void dispose() {
 	}
 
 	// 화면 터치다운시 키보드에 입력
@@ -254,10 +201,8 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		return false;
 	}
 
-	// 화면 터치업시 키보드에 입력
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
 		if (loading || alert || !VirtualKeyboard.display)
 			return false;
 
@@ -265,30 +210,95 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		return false;
 	}
 
-	// *********************** 사용되지 않는 메서드 ***********************
-
 	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
+	public void keyTyped(VirtualKeyButton key) {
+		// 아이디 필드에 포커스가 있을 경우
+		if (component.getKeyboardFocus() == ID) {
+			id_buffer = VirtualKeyboard.addBuffer(id_buffer, key);
+			String text = VirtualKeyboard.mix(id_buffer);
+			ID.setText(text);
+			ID.setCursorPosition(text.length() > 0 ? text.length() : 0);
+			// 패스워드 필드에 포커스가 있을 경우
+		} else if (component.getKeyboardFocus() == PASSWORD) {
+			password_buffer = VirtualKeyboard.addBuffer(password_buffer, key);
+			String text = VirtualKeyboard.mix(password_buffer);
+			PASSWORD.setText(text);
+			PASSWORD.setCursorPosition(text.length() > 0 ? text.length() : 0);
+		} else if (component.getKeyboardFocus() == EMAIL) {
+			email_buffer = VirtualKeyboard.addBuffer(email_buffer, key);
+			String text = VirtualKeyboard.mix(email_buffer);
+			EMAIL.setText(text);
+			EMAIL.setCursorPosition(text.length() > 0 ? text.length() : 0);
+		} else if (component.getKeyboardFocus() == CHARACTER) {
+			character_buffer = VirtualKeyboard.addBuffer(character_buffer, key);
+			String text = VirtualKeyboard.mix(character_buffer);
+			CHARACTER.setText(text);
+			CHARACTER.setCursorPosition(text.length() > 0 ? text.length() : 0);
+		}
+
+	}
+
+	// 경고 혹은 오류 메시지 띄우기
+	public void showAlert(String message) {
+		alert = true;
+		alertMessage = message;
 	}
 
 	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
+	public boolean keyDown(int keycode) {
+		if (keycode == Keys.BACK || keycode == Keys.F1) {
+
+			// 뒤로가기 키를 연속 세 번 누르면 게임 종료
+			if (backKeyPressedCount > 0 && alert) {
+				System.exit(0);
+			}
+
+			// 가상 키보드가 있는 상태에서 뒤로가기 키가 눌리면 키보드 끄기
+			if (VirtualKeyboard.display) {
+				VirtualKeyboard.close();
+				backKeyPressedCount = 0;
+			} else {
+				showAlert("    한 번 더 누르면 종료합니다.");
+				backKeyPressedCount++;
+			}
+		}
 		return false;
 	}
+
+	// *************************************************************
 
 	@Override
 	public boolean scrolled(int amount) {
+
 		return false;
+	}
+
+	@Override
+	public void dispose() {
+
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
+
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
+
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+
 		return false;
 	}
 

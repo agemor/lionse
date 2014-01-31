@@ -16,11 +16,15 @@ public class UserList {
 	}
 
 	public void remove(String code) {
-		users.remove(code);
+		if (users.containsKey(code)) {
+			users.remove(code);
+		}
 	}
 
 	public User get(String code) {
-		return users.get(code);
+		if (users.containsKey(code))
+			return users.get(code);
+		return null;
 	}
 
 	public void clear() {

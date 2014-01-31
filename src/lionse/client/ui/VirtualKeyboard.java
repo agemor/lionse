@@ -12,18 +12,17 @@ public class VirtualKeyboard {
 	public static final String KOR = "ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔㅁㄴㅇㄹㅎㅗㅓㅏㅣㅋㅌㅊㅍㅠㅜㅡㅃㅉㄸㄲㅆㅒㅖ";
 	public static final String ENG = "qwertyuiopasdfghjklzxcvbnmQWERTOPQWERTYUIOPASDFGHJKLZXCVBNM";
 	public static final String INITIAL_LIST = "rRseEfaqQtTdwWczxvg";
-	public static final String[] MEDIAL_LIST = { "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk",
-			"ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l" };
-	public static final String[] FINAL_LIST = { "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr",
-			"fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x",
-			"v", "g" };
+	public static final String[] MEDIAL_LIST = { "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l" };
+	public static final String[] FINAL_LIST = { "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T",
+			"d", "w", "c", "z", "x", "v", "g" };
 
 	public static final int INITIAL = 0;
 	public static final int MEDIAL = 1;
 	public static final int FINAL = 2;
 
 	// display values.
-	public static boolean display = true;
+	public static boolean display = false;
+	public static boolean closed = true;
 
 	// keyboard sets
 	public static VirtualKeySet Korean;
@@ -61,14 +60,13 @@ public class VirtualKeyboard {
 
 		} else if (key.letter.equals("SPACE")) {
 			buffer += "/ /";
-		} else if (!key.letter.equals("BACKSPACE")) {
+		} else if (!key.letter.equals("BACKSPACE") && !key.letter.equals("ENTER")) {
 			buffer += key.value;
 		}
-		return buffer;
+		return buffer.trim();
 	}
 
 	public static String mix(String buffer) {
-
 		String[] chunk = buffer.split("/");
 		String result = "";
 		for (int i = 0; i < chunk.length; i++) {
@@ -76,7 +74,7 @@ public class VirtualKeyboard {
 				if (chunk[i].equals(""))
 					continue;
 				String c = VirtualKeyboard.combine(chunk[i] + " ");
-				result += c.substring(0, c.length());
+				result += c.trim().substring(0, c.trim().length());
 			} else {
 				result += chunk[i];
 			}
@@ -99,12 +97,14 @@ public class VirtualKeyboard {
 	}
 
 	public static void show() {
+		selectedSet.show();
 		display = true;
+		closed = false;
 	}
 
 	public static void close() {
-		Gdx.app.log("sdsd", "closed");
-		display = false;
+		selectedSet.close();
+		closed = true;
 	}
 
 	public static void touchUp(int screenX, int screenY, int pointer, int button) {
@@ -143,6 +143,10 @@ public class VirtualKeyboard {
 	}
 
 	public static void update(float delta) {
+		if (closed && selectedSet.set[0][0].position.y < -60) {
+			display = false;
+		}
+
 		if (!display)
 			return;
 		for (int i = 0; i < selectedSet.set.length; i++) {
@@ -208,10 +212,8 @@ public class VirtualKeyboard {
 						i++;
 					} else { // 이어지는 건 자음이 아니다. 자음 + 모음 의 형태
 						initialCode = initialCode / 21 / 28;
-						combined.append(fromCharCode(12593
-								+ initialCode
-								+ (initialCode < 2 ? 0 : initialCode < 3 ? 1 : initialCode < 6 ? 3
-										: initialCode < 9 ? 10 : 11)));
+						combined.append(fromCharCode(12593 + initialCode
+								+ (initialCode < 2 ? 0 : initialCode < 3 ? 1 : initialCode < 6 ? 3 : initialCode < 9 ? 10 : 11)));
 					}
 					continue;
 				}
@@ -286,10 +288,7 @@ public class VirtualKeyboard {
 			} else {
 				if (medialCode < 0) {
 					initialCode = initialCode / 21 / 28;
-					result = fromCharCode(12593
-							+ initialCode
-							+ (initialCode < 2 ? 0 : initialCode < 3 ? 1 : initialCode < 6 ? 3
-									: initialCode < 9 ? 10 : 11));
+					result = fromCharCode(12593 + initialCode + (initialCode < 2 ? 0 : initialCode < 3 ? 1 : initialCode < 6 ? 3 : initialCode < 9 ? 10 : 11));
 				} else {
 					result = fromCharCode(44032 + initialCode + medialCode + finalCode);
 				}

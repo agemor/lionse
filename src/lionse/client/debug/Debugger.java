@@ -12,7 +12,7 @@ public class Debugger {
 	public static void fps() {
 		frames++;
 		if (System.nanoTime() - startTime >= 1000000000) {
-			log("[debug] fps: " + frames);
+			log("[debug] fps: "+frames);
 			frames = 0;
 			startTime = System.nanoTime();
 		}

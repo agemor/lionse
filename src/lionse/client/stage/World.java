@@ -9,13 +9,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lionse.client.Display;
 import lionse.client.asset.Asset;
-import lionse.client.debug.Debugger;
 import lionse.client.net.Server;
 import lionse.client.net.UserEvent;
 import lionse.client.net.user.User;
 import lionse.client.stage.unit.Natural;
-import lionse.client.ui.LoginUI;
-import lionse.client.ui.UI;
 import lionse.client.ui.WorldUI;
 
 public class World implements Screen, UserEvent {
@@ -26,18 +23,20 @@ public class World implements Screen, UserEvent {
 
 	// 그래픽 변수
 	public SpriteBatch spriteBatch;
+	public SpriteBatch notificationRenderer;
 
 	// 스테이지
 	public Stage stage;
 
 	// UI 처리
-	public UI ui;
+	public WorldUI ui;
 
 	// 생성자
 	public World() {
 
 		// 그래픽 변수 초기화.
 		spriteBatch = new SpriteBatch();
+		notificationRenderer = new SpriteBatch();
 
 		// 스테이지 초기화
 		stage = new Stage();
@@ -75,18 +74,23 @@ public class World implements Screen, UserEvent {
 
 		if (!initialized || !Server.loaded)
 			return;
+		// 프레임버퍼 초기화
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		// 스테이지 랜더링
 		spriteBatch.begin();
-
 		stage.update(delta);
 		stage.draw(spriteBatch, delta);
-
-		ui.draw(spriteBatch, delta);
-
 		spriteBatch.end();
 
+		// 컴포넌트에 의한 UI랜더링
 		ui.update(delta);
+
+		// 최상위 UI랜더링
+		notificationRenderer.setProjectionMatrix(ui.component.getCamera().combined);
+		notificationRenderer.begin();
+		ui.draw(notificationRenderer, delta);
+		notificationRenderer.end();
 	}
 
 	@Override
@@ -106,6 +110,7 @@ public class World implements Screen, UserEvent {
 		stage.camera.viewportHeight = (float) Math.ceil(Display.SCALE * height);
 
 		stage.camera.position.set(Display.WIDTH / 2, Display.HEIGHT / 2, 0);
+		((WorldUI) ui).component.setViewport(stage.camera.viewportWidth, stage.camera.viewportHeight, false);
 	}
 
 	@Override
@@ -160,6 +165,8 @@ public class World implements Screen, UserEvent {
 
 	@Override
 	public void chat(User user) {
+		ui.CHAT_BOX.addMessage(user.name + ":" + user.message);
+		user.character.talk(user.name + ":" + user.message);
 	}
 
 	@Override

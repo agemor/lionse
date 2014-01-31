@@ -1,7 +1,8 @@
 package lionse.client.ui;
 
+import lionse.client.Display;
 import lionse.client.asset.Asset;
-import lionse.client.stage.Stage.Point;
+import lionse.client.stage.Point;
 
 public class VirtualKeySet {
 
@@ -19,7 +20,7 @@ public class VirtualKeySet {
 	public void set(int setIndex, String[] keys) {
 		for (int i = 0; i < keys.length; i++) {
 
-			float keyX = i * 65 + setIndex * 20 + CustomAdjustment.getVirtualKeyboardX();
+			float keyX = i * 65 + setIndex * 20 + Display.WIDTH * Display.SCALE - 790;
 			float keyY = (4 - setIndex) * 45;
 
 			VirtualKeyButton key = new VirtualKeyButton(keys[i]);
@@ -32,9 +33,9 @@ public class VirtualKeySet {
 				key.value = keys[i];
 			}
 
-			key.graphics = Asset.keyboard.get(keys[i]);
+			key.graphics = Asset.Keyboard.get(keys[i]);
 			key.position = new Point(keyX, keyY - 40, 0);
-			key.background = Asset.keyboardBasement.get(keys[i]);
+			key.background = Asset.KeyboardBasement.get(keys[i]);
 			key.targetPosition = new Point(keyX, keyY, 0);
 			key.originalY = keyY;
 			key.barneySpeed = 0.2f;
@@ -49,11 +50,11 @@ public class VirtualKeySet {
 	public static class Korean extends VirtualKeySet {
 
 		public String[] keySet1 = { "CHR", "げ", "じ", "ぇ", "ぁ", "さ", "に", "づ", "ち", "だ", "つ" };
-		public String[] keySet2 = { "SET-UP", "け", "い", "し", "ぉ", "ぞ", "で", "っ", "た", "び", "NUM" };
+		public String[] keySet2 = { "SET-UP", "け", "い", "し", "ぉ", "ぞ", "で", "っ", "た", "び", "ENTER" };
 		public String[] keySet3 = { "IME-E", "せ", "ぜ", "ず", "そ", "ば", "ぬ", "ぱ", "SPACE" };
 
 		public String[] skeySet1 = { "CHR", "こ", "す", "え", "あ", "ざ", "に", "づ", "ち", "ぢ", "て" };
-		public String[] skeySet2 = { "SET-DOWN", "け", "い", "し", "ぉ", "ぞ", "で", "っ", "た", "び", "NUM" };
+		public String[] skeySet2 = { "SET-DOWN", "け", "い", "し", "ぉ", "ぞ", "で", "っ", "た", "び", "ENTER" };
 		public String[] skeySet3 = { "IME-E", "せ", "ぜ", "ず", "そ", "ば", "ぬ", "ぱ", "SPACE" };
 
 		public Korean() {
@@ -64,8 +65,12 @@ public class VirtualKeySet {
 		@Override
 		public void set(boolean num, boolean shift) {
 			if (num) {
+				keySet1[0] = "CHR";
+				skeySet1[0] = "CHR";
 				set(0, this.numKeys);
 			} else {
+				keySet1[0] = "NUM";
+				skeySet1[0] = "NUM";
 				set(0, this.charKeys);
 			}
 			if (!shift) {
@@ -96,11 +101,11 @@ public class VirtualKeySet {
 	public static class English extends VirtualKeySet {
 
 		public String[] keySet1 = { "CHR", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" };
-		public String[] keySet2 = { "SET-UP", "a", "s", "d", "f", "g", "h", "j", "k", "l", "NUM" };
+		public String[] keySet2 = { "SET-UP", "a", "s", "d", "f", "g", "h", "j", "k", "l", "ENTER" };
 		public String[] keySet3 = { "IME-K", "z", "x", "c", "v", "b", "n", "m", "SPACE" };
 
 		public String[] skeySet1 = { "CHR", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P" };
-		public String[] skeySet2 = { "SET-DOWN", "A", "S", "D", "F", "G", "H", "J", "K", "L", "NUM" };
+		public String[] skeySet2 = { "SET-DOWN", "A", "S", "D", "F", "G", "H", "J", "K", "L", "ENTER" };
 		public String[] skeySet3 = { "IME-K", "Z", "X", "C", "V", "B", "N", "M", "SPACE" };
 
 		public English() {
@@ -110,8 +115,12 @@ public class VirtualKeySet {
 		@Override
 		public void set(boolean num, boolean shift) {
 			if (num) {
+				keySet1[0] = "CHR";
+				skeySet1[0] = "CHR";
 				set(0, this.numKeys);
 			} else {
+				keySet1[0] = "NUM";
+				skeySet1[0] = "NUM";
 				set(0, this.charKeys);
 			}
 			if (!shift) {
@@ -122,6 +131,30 @@ public class VirtualKeySet {
 				set(1, skeySet1);
 				set(2, skeySet2);
 				set(3, skeySet3);
+			}
+		}
+	}
+
+	public void show() {
+		for (int i = 0; i < set.length; i++) {
+			for (int j = 0; j < set[i].length; j++) {
+				if (set[i][j] == null)
+					continue;
+				VirtualKeyButton key = set[i][j];
+				key.barneySpeed = (float) (7 - i) / (float) (40 + j);
+				key.targetPosition.y = key.originalY;
+			}
+		}
+
+	}
+
+	public void close() {
+		for (int i = 0; i < set.length; i++) {
+			for (int j = 0; j < set[i].length; j++) {
+				if (set[i][j] == null)
+					continue;
+				VirtualKeyButton key = set[i][j];
+				key.targetPosition.y = key.originalY - 250;
 			}
 		}
 	}

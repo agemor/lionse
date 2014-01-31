@@ -1,8 +1,6 @@
 package lionse.client.stage;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import lionse.client.asset.Asset;
-import lionse.client.stage.Stage.Point;
 
 public abstract class Unit implements Renderable {
 
@@ -16,9 +14,9 @@ public abstract class Unit implements Renderable {
 	// texture cache
 	public TextureRegion[] texture;
 
-	public Unit(int type, int graphic) {
+	public Unit(int type, TextureRegion[] graphic) {
 		this.type = type;
-		this.texture = Asset.game.get(graphic);
+		this.texture = graphic;
 		position = new Point();
 	}
 

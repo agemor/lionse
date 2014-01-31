@@ -18,7 +18,7 @@ public class Database {
 	public static Statement statement;
 	public static String location = "jdbc:mysql://localhost:3306/lionse";
 	public static String id = "root";
-	public static String password = "asd123";
+	public static String password = "guswns96!";
 
 	public static String query_user;
 	public static String query_character;
@@ -52,7 +52,8 @@ public class Database {
 			char[] query_user_buffer = new char[1000];
 			char[] query_character_buffer = new char[1000];
 			FileReader query_user_file = new FileReader("./sql/user.sql");
-			FileReader query_character_file = new FileReader("./sql/character.sql");
+			FileReader query_character_file = new FileReader(
+					"./sql/character.sql");
 			query_user_file.read(query_user_buffer);
 			query_character_file.read(query_character_buffer);
 
@@ -73,7 +74,8 @@ public class Database {
 	public static boolean login(String id, String password) {
 		if (!connected)
 			return false;
-		String query = "SELECT * FROM `lionse`.`user` WHERE `id` = '" + id + "'";
+		String query = "SELECT * FROM `lionse`.`user` WHERE `id` = '" + id
+				+ "'";
 		try {
 			ResultSet result = statement.executeQuery(query);
 
@@ -94,7 +96,8 @@ public class Database {
 		return false;
 	}
 
-	public static boolean newUser(String id, String password, String character, String email) {
+	public static boolean newUser(String id, String password, String character,
+			String email) {
 		if (!connected)
 			return false;
 		String query0 = "SELECT * FROM `lionse`.`user` WHERE `id` = '" + id
@@ -136,7 +139,8 @@ public class Database {
 	public static UserInfo getUserInfo(String id) {
 		if (!connected)
 			return null;
-		String query = "SELECT * FROM `lionse`.`user` WHERE `id` = '" + id + "'";
+		String query = "SELECT * FROM `lionse`.`user` WHERE `id` = '" + id
+				+ "'";
 
 		try {
 			ResultSet result = statement.executeQuery(query);
@@ -158,7 +162,8 @@ public class Database {
 	public static Character getCharacter(String name) {
 		if (!connected)
 			return null;
-		String query = "SELECT * FROM `lionse`.`character` WHERE `name` = '" + name + "'";
+		String query = "SELECT * FROM `lionse`.`character` WHERE `name` = '"
+				+ name + "'";
 		Character character = new Character();
 		try {
 			ResultSet result = statement.executeQuery(query);
@@ -184,12 +189,15 @@ public class Database {
 	public static void updateCharacter(Character character) {
 		if (!connected)
 			return;
-		String query = "UPDATE `lionse`.`character` SET `level`='" + character.level
-				+ "', `maxhealth` = '" + character.maxHealth + "', `money` = '" + character.money
-				+ "', `hat` = '" + character.equipment.hat + "', `clothes` = '"
-				+ character.equipment.clothes + "', `weapon` = '" + character.equipment.weapon
-				+ "', `exp` = '" + character.experience + "', `location` = '"
-				+ character.location.getPacket() + "'  WHERE `name` = '" + character.name + "';";
+		String query = "UPDATE `lionse`.`character` SET `level`='"
+				+ character.level + "', `maxhealth` = '" + character.maxHealth
+				+ "', `money` = '" + character.money + "', `hat` = '"
+				+ character.equipment.hat + "', `clothes` = '"
+				+ character.equipment.clothes + "', `weapon` = '"
+				+ character.equipment.weapon + "', `exp` = '"
+				+ character.experience + "', `location` = '"
+				+ character.location.getPacket() + "'  WHERE `name` = '"
+				+ character.name + "';";
 		try {
 			statement.executeUpdate(query);
 		} catch (SQLException e) {

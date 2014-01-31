@@ -3,14 +3,15 @@ package lionse.client.stage;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import lionse.client.Display;
 import lionse.client.asset.Asset;
-import lionse.client.debug.Debugger;
 import lionse.client.net.Header;
 import lionse.client.net.Server;
-import lionse.client.stage.Stage.Point;
 
 public class Character implements Renderable {
 
@@ -21,10 +22,16 @@ public class Character implements Renderable {
 	public static final float C_BODY = 24 * RESOLUTION;
 	public static final float C_HAND = 29 * RESOLUTION;
 	public static final float C_LEG = 30 * RESOLUTION;
+	public static LabelStyle NAME_TAG_STYLE;
 
-	public static float[] SINE_WAVE = { 0, 0.27f, 0.52f, 0.74f, 0.89f, 0.98f, 0.99f, 0.93f, 0.79f,
-			0.59f, 0.35f, 0.08f, -0.19f, -0.45f, -0.67f, -0.85f, -0.96f, -0.99f, -0.95f, -0.84f,
-			-0.66f, -0.43f, -0.17f };
+	public static float[] SINE_WAVE = { 0, 0.27f, 0.52f, 0.74f, 0.89f, 0.98f, 0.99f, 0.93f, 0.79f, 0.59f, 0.35f, 0.08f, -0.19f, -0.45f, -0.67f, -0.85f, -0.96f,
+			-0.99f, -0.95f, -0.84f, -0.66f, -0.43f, -0.17f };
+
+	static {
+		NAME_TAG_STYLE = new LabelStyle();
+		NAME_TAG_STYLE.font = Asset.Font.get(Asset.NanumGothic);
+		NAME_TAG_STYLE.fontColor = Color.BLACK;
+	}
 
 	public boolean me = false;
 
@@ -44,6 +51,12 @@ public class Character implements Renderable {
 	public Point bottom;
 
 	// character graphics
+	public Label nameTag;
+
+	// 말풍선 관련
+	public TalkBalloon talkBalloon;
+
+	// 싱크 맞추기 관련
 	public List<Path> path;
 	public int pathIndex = 0;
 	public int direction = 0;
@@ -82,6 +95,9 @@ public class Character implements Renderable {
 		this.position = new Point();
 		this.bottom = new Point();
 
+		this.talkBalloon = new TalkBalloon(this);
+		
+		this.nameTag = new Label(name, NAME_TAG_STYLE);
 		this.path = new ArrayList<Path>();
 
 		cache();
@@ -90,15 +106,19 @@ public class Character implements Renderable {
 	// cache values. if this method is not called when texture value is
 	// changed.noting happens to the graphic
 	public void cache() {
-		texture_head = Asset.character.get(Asset.Character.get("HEAD"));
-		texture_face = Asset.character.get(Asset.Character.get("FACE"));
-		texture_body = Asset.character.get(Asset.Character.get("BODY"));
-		texture_hand = Asset.character.get(Asset.Character.get("HAND"));
-		texture_leg_stop = Asset.character.get(Asset.Character.get("LEG"));
-		texture_leg_step1 = Asset.character.get(Asset.Character.get("LEG_STEP1"));
-		texture_leg_step2 = Asset.character.get(Asset.Character.get("LEG_STEP2"));
-		texture_leg_step3 = Asset.character.get(Asset.Character.get("LEG_STEP3"));
-		texture_leg_step4 = Asset.character.get(Asset.Character.get("LEG_STEP4"));
+		texture_head = Asset.Character.get("HEAD");
+		texture_face = Asset.Character.get("FACE");
+		texture_body = Asset.Character.get("BODY");
+		texture_hand = Asset.Character.get("HAND");
+		texture_leg_stop = Asset.Character.get("LEG_STAND");
+		texture_leg_step1 = Asset.Character.get("LEG_STEP1");
+		texture_leg_step2 = Asset.Character.get("LEG_STEP2");
+		texture_leg_step3 = Asset.Character.get("LEG_STEP3");
+		texture_leg_step4 = Asset.Character.get("LEG_STEP4");
+	}
+
+	public void talk(String message) {
+		talkBalloon.show(message);
 	}
 
 	@Override
@@ -108,50 +128,46 @@ public class Character implements Renderable {
 		if (moving) {
 			switch (step) {
 			case 0:
-				spriteBatch.draw(texture_leg_step1[direction], position.x, Display.HEIGHT
-						- (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step1[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 				break;
 			case 1:
-				spriteBatch.draw(texture_leg_step2[direction], position.x, Display.HEIGHT
-						- (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step2[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 				break;
 			case 2:
-				spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT
-						- (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 				break;
 			case 3:
-				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT
-						- (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 				break;
 			case 4:
-				spriteBatch.draw(texture_leg_step4[direction], position.x, Display.HEIGHT
-						- (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step4[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 				break;
 			case 5:
-				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT
-						- (position.y + C_LEG));
+				spriteBatch.draw(texture_leg_step3[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 				break;
 			}
 		} else {
-			spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT
-					- (position.y + C_LEG));
+			spriteBatch.draw(texture_leg_stop[direction], position.x, Display.HEIGHT - (position.y + C_LEG));
 		}
 
 		// draw body
-		spriteBatch.draw(texture_body[direction], position.x, Display.HEIGHT
-				- (position.y + p_body));
+		spriteBatch.draw(texture_body[direction], position.x, Display.HEIGHT - (position.y + p_body));
 
 		// draw hands
-		spriteBatch.draw(texture_hand[direction], position.x, Display.HEIGHT
-				- (position.y + p_hand));
+		spriteBatch.draw(texture_hand[direction], position.x, Display.HEIGHT - (position.y + p_hand));
 
 		// draw face
-		spriteBatch.draw(texture_face[direction], position.x, Display.HEIGHT
-				- (position.y + p_face));
+		spriteBatch.draw(texture_face[direction], position.x, Display.HEIGHT - (position.y + p_face));
 
 		// draw head
-		spriteBatch.draw(texture_head[direction], position.x, Display.HEIGHT
-				- (position.y + p_head));
+		spriteBatch.draw(texture_head[direction], position.x, Display.HEIGHT - (position.y + p_head));
+
+		// draw name tag
+		nameTag.draw(spriteBatch, 1);
+
+		// draw talk balloon
+		if (talkBalloon.talking)
+			talkBalloon.draw(spriteBatch, delta);
 	}
 
 	@Override
@@ -196,9 +212,6 @@ public class Character implements Renderable {
 
 				// 현재 좌표와 타겟 좌표를 검사해서 범위 안에 들어오면 완료
 				if (path.check(position)) {
-					// 포지션 강제 세팅
-					// position.x = path.target.x;
-					// position.y = path.target.y;
 					// 완료 후, 스택에서 포인터가 0이면 스택을 초기화한다 (메모리 관리상)
 					if (this.path.size() - 1 <= pathIndex) {
 						this.path.clear();
@@ -206,10 +219,21 @@ public class Character implements Renderable {
 					} else {
 						pathIndex++;
 					}
+
+					// 차이가 너무 크게 날 경우 하드세팅한다.
+				} else if (path.previousDistance > 2000 && path.target != null) {
+					// 포지션 강제 세팅
+					position.x = path.target.x;
+					position.y = path.target.y;
 				}
 			}
 
 		}
+
+		nameTag.setPosition(position.x - (nameTag.getWidth() / 2) + 27, Display.HEIGHT - position.y + 27);
+		
+		if (talkBalloon.talking)
+			talkBalloon.update(delta);
 
 		// 정지 지점과 현재 지점의 갭을 매꾸기 위한 경로는 서버에서 이벤트를 받을 때 미리 계산해 놓는다.
 
@@ -223,11 +247,6 @@ public class Character implements Renderable {
 		p_body = C_BODY + SINE_WAVE[next] * 2;
 		p_hand = C_HAND + SINE_WAVE[next] * 2;
 
-	}
-
-	private void moveTo(Path path, float delta) {
-		position.x += path.velocityX * speed * delta;
-		position.y += path.velocityY * speed * delta;
 	}
 
 	private void updatePosition(float delta) {
@@ -273,14 +292,12 @@ public class Character implements Renderable {
 
 	public void move(int targetDirection) {
 		this.direction = targetDirection;
-		Server.send(Header.MOVE + Server.H_L + direction + Server.H_L + Math.round(speed)
-				+ Server.H_L + Math.round(position.x) + Server.H_L + Math.round(position.y)
-				+ Server.H_L + Math.round(position.z));
+		Server.send(Header.MOVE + Server.H_L + direction + Server.H_L + Math.round(speed) + Server.H_L + Math.round(position.x) + Server.H_L
+				+ Math.round(position.y) + Server.H_L + Math.round(position.z));
 	}
 
 	public void stop() {
-		Server.send(Header.STOP + Server.H_L + Math.round(position.x) + Server.H_L
-				+ Math.round(position.y) + Server.H_L + Math.round(position.z));
+		Server.send(Header.STOP + Server.H_L + Math.round(position.x) + Server.H_L + Math.round(position.y) + Server.H_L + Math.round(position.z));
 	}
 
 	public int getDirection(Point point) {

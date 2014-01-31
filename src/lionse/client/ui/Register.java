@@ -4,18 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import lionse.client.Display;
 import lionse.client.Lionse;
 import lionse.client.net.Server;
 import lionse.client.net.ServerEvent;
 
 /**
- * 로그인을 처리하는 화면
+ * 회원가입 입력을 처리하는 화면
  * 
  * @author 김현준
  * 
  */
-public class Login implements Screen, ServerEvent {
+
+public class Register extends ChangeListener implements Screen, ServerEvent {
 
 	// 시스템 변수
 	public GL20 gl = Gdx.graphics.getGL20();
@@ -24,20 +27,19 @@ public class Login implements Screen, ServerEvent {
 	// 그래픽 랜더러 변수
 	public SpriteBatch spriteBatch;
 
-	// 로그인 UI
-	public LoginUI ui;
+	// 회원가입 UI
+	public RegisterUI ui;
 
-	public Login(Lionse lionse) {
+	public Register(Lionse lionse) {
 		this.lionse = lionse;
 
-		ui = new LoginUI(this);
+		ui = new RegisterUI(this);
 		spriteBatch = new SpriteBatch();
 	}
 
-	// 로그인 창이 화면에 띄워졌을 때 실행
+	// 회원가입 창이 화면에 띄워졌을 때 실행
 	@Override
 	public void show() {
-
 		// 이벤트 리스너 등록
 		Server.setServerEventListener(this);
 
@@ -46,7 +48,7 @@ public class Login implements Screen, ServerEvent {
 
 	}
 
-	// 로그인 UI의 랜더링 실행
+	// 화면 랜더링
 	@Override
 	public void render(float delta) {
 		// 프레임버퍼 비우기
@@ -64,34 +66,19 @@ public class Login implements Screen, ServerEvent {
 	}
 
 	@Override
-	public void connected(boolean succeed) {
-		ui.loading = false;
-		if (succeed) {
-		} else {
-		}
-	}
+	public void changed(ChangeEvent event, Actor actor) {
 
-	@Override
-	public void login(boolean succeed) {
-		ui.loading = false;
-		if (succeed) {
-			Server.join();
-		} else {
-			ui.showAlert("       로그인에 실패하였습니다.");
-		}
-	}
-
-	@Override
-	public void join(boolean succeed) {
-		if (succeed) {
-			ui.dispose();
-			lionse.setScreen(lionse.world);
-		}
 	}
 
 	@Override
 	public void register(boolean succeed) {
-
+		ui.loading = false;
+		if (succeed) {
+			lionse.setScreen(lionse.login);
+			lionse.login.ui.showAlert("   회원 가입이 완료되었습니다!");
+		} else {
+			ui.showAlert("아이디 혹은 캐릭터명이 중복입니다.");
+		}
 	}
 
 	@Override
@@ -100,11 +87,7 @@ public class Login implements Screen, ServerEvent {
 		ui.component.setViewport((float) Math.ceil(Display.SCALE * width), (float) Math.ceil(Display.SCALE * height), false);
 	}
 
-	@Override
-	public void dispose() {
-		spriteBatch.dispose();
-	}
-
+	// ******************************************************************
 	@Override
 	public void hide() {
 
@@ -117,6 +100,26 @@ public class Login implements Screen, ServerEvent {
 
 	@Override
 	public void resume() {
+
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public void connected(boolean succeed) {
+
+	}
+
+	@Override
+	public void login(boolean succeed) {
+
+	}
+
+	@Override
+	public void join(boolean succeed) {
 
 	}
 

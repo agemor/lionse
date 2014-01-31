@@ -8,15 +8,14 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import lionse.client.asset.Asset;
 import lionse.client.debug.Debugger;
 import lionse.client.net.user.User;
 import lionse.client.net.user.UserList;
 import lionse.client.security.crypto.BASE64;
 import lionse.client.security.crypto.SHA256;
-import lionse.client.stage.Path;
-import lionse.client.stage.Stage.Point;
 import lionse.client.stage.Character;
+import lionse.client.stage.Path;
+import lionse.client.stage.Point;
 
 public class Server {
 
@@ -47,7 +46,6 @@ public class Server {
 	public static boolean logined = false;
 	public static boolean joined = false;
 	public static boolean loaded = false;
-	private static boolean signal = true;
 
 	public static int state = 0;
 
@@ -71,19 +69,31 @@ public class Server {
 		Server.host = host;
 		Server.port = port;
 
-		socket = new Socket();
+		Connector connector = new Connector();
+		connector.start();
 
-		try {
-			socket.connect(new InetSocketAddress(host, port));
-			writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), ENCODING));
-			signal = true;
-			receiver = new Receiver(socket);
-			receiver.start();
-			if (socket.isConnected())
-				connected = true;
+	}
 
-		} catch (IOException e) {
-			e.printStackTrace();
+	public static class Connector extends Thread {
+		@Override
+		public void run() {
+			try {
+				socket = new Socket();
+				socket.connect(new InetSocketAddress(host, port));
+				writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), ENCODING));
+				receiver = new Receiver(socket);
+				receiver.start();
+				if (socket.isConnected()) {
+					connected = true;
+					if (serverEventTarget != null)
+						serverEventTarget.connected(true);
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (serverEventTarget != null)
+					serverEventTarget.connected(false);
+			}
 		}
 	}
 
@@ -115,8 +125,8 @@ public class Server {
 		if (!connected)
 			return;
 		state = REGISTER_TRY;
-		send(Header.REGISTER + H_L + id + H_L + SHA256.digest(password) + H_L
-				+ BASE64.encodeString(character) + H_L + email);
+		send(Header.REGISTER + H_L + id + H_L + SHA256.digest(password) + H_L + BASE64.encodeString(character) + H_L
+				+ email);
 
 	}
 
@@ -124,11 +134,14 @@ public class Server {
 		try {
 			socket.close();
 			writer.close();
-			signal = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void chat(String message) {
+		send(Header.BROADCAST + H_L + Header.CHAT + H_L + me.code + H_L + message);
 	}
 
 	// game join
@@ -153,16 +166,23 @@ public class Server {
 		public void run() {
 			try {
 
-				reader = new BufferedReader(
-						new InputStreamReader(socket.getInputStream(), ENCODING));
+				reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), ENCODING));
 
 				while (true) {
 					String data = reader.readLine();
 
-					// multi-packet processing
-					String[] buffer = data.split(PACKET_END);
-					for (int i = 0; i < buffer.length; i++) {
-						handlePacket(buffer[i]);
+					try {
+
+						// multi-packet processing
+						String[] buffer = data.split(PACKET_END);
+						for (int i = 0; i < buffer.length; i++) {
+							handlePacket(buffer[i]);
+						}
+					} catch (Exception e) {
+
+						// 오류를 보고하나, 스레드를 종료하지는 않는다.
+
+						e.printStackTrace();
 					}
 				}
 
@@ -222,8 +242,7 @@ public class Server {
 						serverEventTarget.join(true);
 					Debugger.log("Join succeed.");
 					// join failed -> wrong session
-				} else if (header.equals(Header.ERROR)
-						&& buffer[1].equals(ErrorCode.CANNOT_FIND_SESSION)) {
+				} else if (header.equals(Header.ERROR) && buffer[1].equals(ErrorCode.CANNOT_FIND_SESSION)) {
 					if (serverEventTarget != null)
 						serverEventTarget.join(false);
 					Debugger.log("Join failed.");
@@ -264,8 +283,7 @@ public class Server {
 				user.stage = me.stage;
 				user.position = new Point(Integer.parseInt(buffer[6]), Integer.parseInt(buffer[7]),
 						Integer.parseInt(buffer[8]));
-				user.character = new Character(user.name, Asset.Character.get("HEAD"),
-						Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
+				user.character = new Character(user.name, 0, 0, 0, 0);
 				users.add(user);
 
 				// dispatch event
@@ -277,11 +295,12 @@ public class Server {
 				if (buffer[1].equals(me.code))
 					return;
 				User user = users.get(buffer[1]);
-				users.remove(user.code);
-
-				// dispatch event
-				if (userEventTarget != null)
-					userEventTarget.leave(user);
+				if (user != null) {
+					users.remove(user.code);
+					// dispatch event
+					if (userEventTarget != null)
+						userEventTarget.leave(user);
+				}
 
 				// you' re character info receipt!
 			} else if (header.equals(Header.CHARACTER)) {
@@ -298,8 +317,7 @@ public class Server {
 				me.stage = Integer.parseInt(buffer[10]);
 				me.position = new Point(Integer.parseInt(buffer[11]), Integer.parseInt(buffer[12]),
 						Integer.parseInt(buffer[13]));
-				me.character = new Character(me.name, Asset.Character.get("HEAD"),
-						Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
+				me.character = new Character(me.name, 0, 0, 0, 0);
 				me.character.position = me.position;
 				me.character.me = true;
 				users.add(me);
@@ -329,10 +347,9 @@ public class Server {
 					user.body = Integer.parseInt(chunk[3]);
 					user.weapon = Integer.parseInt(chunk[4]);
 					user.stage = me.stage;
-					user.position = new Point(Integer.parseInt(chunk[5]),
-							Integer.parseInt(chunk[6]), Integer.parseInt(chunk[7]));
-					user.character = new Character(user.name, Asset.Character.get("HEAD"),
-							Asset.Character.get("FACE"), Asset.Character.get("BODY"), 0);
+					user.position = new Point(Integer.parseInt(chunk[5]), Integer.parseInt(chunk[6]),
+							Integer.parseInt(chunk[7]));
+					user.character = new Character(user.name, 0, 0, 0, 0);
 
 					users.add(user);
 				}
@@ -346,7 +363,13 @@ public class Server {
 
 				// custom format #1. chatting
 				if (buffer[1].equals(Header.CHAT)) {
+
+					if (buffer[2].equals(me.code))
+						return;
+
 					User user = users.get(buffer[2]);
+					if (user == null)
+						return;
 					user.message = buffer[3];
 					if (userEventTarget != null)
 						userEventTarget.chat(user);
@@ -360,14 +383,14 @@ public class Server {
 				// 이동 패스는 위에 스택이 쌓이면 바로 무시된다.
 
 				User user = users.get(buffer[1]);
-
+				if (user == null)
+					return;
 				user.direction = Integer.parseInt(buffer[2]);
 				user.speed = Float.valueOf(buffer[3]);
 				user.state = User.MOVE;
 
 				// 이동을 시작하였거나, 방향을 전환한 좌표
-				Point point = new Point(Float.valueOf(buffer[4]), Float.valueOf(buffer[5]),
-						Float.valueOf(buffer[6]));
+				Point point = new Point(Float.valueOf(buffer[4]), Float.valueOf(buffer[5]), Float.valueOf(buffer[6]));
 
 				// 보관 중이거나 실행 중인 방향 이동 명령을 비활성화시킨다.
 				if (user.movePath != null)
@@ -386,18 +409,20 @@ public class Server {
 					Path path = new Path(user.character.getDirection(point), point);
 
 					// x 변위와 y 변위로 스케일을 계산한다.
-					float xScale = Math.abs(point.x - user.character.position.x);
-					float yScale = Math.abs(point.y - user.character.position.y);
-
-					if (xScale > yScale) { // x변위가 더 크다. y속도에 감소값을 곱해준다.
-						path.velocityX = point.x - user.character.position.x > 0 ? 1 : -1;
-						path.velocityY = (point.y - user.character.position.y > 0 ? 1 : -1)
-								* yScale / xScale;
-					} else {
-						path.velocityX = (point.x - user.character.position.x > 0 ? 1 : -1)
-								* xScale / yScale;
-						path.velocityY = point.y - user.character.position.y > 0 ? 1 : -1;
-					}
+					/*
+					 * float xScale = Math.abs(point.x -
+					 * user.character.position.x); float yScale =
+					 * Math.abs(point.y - user.character.position.y);
+					 * 
+					 * if (xScale > yScale) { // x변위가 더 크다. y속도에 감소값을 곱해준다.
+					 * path.velocityX = point.x - user.character.position.x > 0
+					 * ? 1 : -1; path.velocityY = (point.y -
+					 * user.character.position.y > 0 ? 1 : -1) * yScale /
+					 * xScale; } else { path.velocityX = (point.x -
+					 * user.character.position.x > 0 ? 1 : -1) * xScale /
+					 * yScale; path.velocityY = point.y -
+					 * user.character.position.y > 0 ? 1 : -1; }
+					 */
 
 					user.character.path.add(path);
 				}
@@ -424,8 +449,7 @@ public class Server {
 				user.movePath.disable();
 
 				// 이동을 멈춘 좌표
-				Point point = new Point(Float.valueOf(buffer[2]), Float.valueOf(buffer[3]),
-						Float.valueOf(buffer[4]));
+				Point point = new Point(Float.valueOf(buffer[2]), Float.valueOf(buffer[3]), Float.valueOf(buffer[4]));
 				// 한계값 체크. (서버에 캐릭터의 실위치가 소수부분 없이 전송이 되기 때문에 그냥 비교하면 오차가 생긴다)
 				if (Math.sqrt(Math.pow(point.x - user.character.position.x, 2)
 						+ Math.pow(point.y - user.character.position.y, 2)) > 3) {
@@ -433,18 +457,20 @@ public class Server {
 					Path path = new Path(user.character.getDirection(point), point);
 
 					// x 변위와 y 변위로 스케일을 계산한다.
-					float xScale = Math.abs(point.x - user.character.position.x);
-					float yScale = Math.abs(point.y - user.character.position.y);
-
-					if (xScale > yScale) { // x변위가 더 크다. y속도에 감소값을 곱해준다.
-						path.velocityX = point.x - user.character.position.x > 0 ? 1 : -1;
-						path.velocityY = (point.y - user.character.position.y > 0 ? 1 : -1)
-								* yScale / xScale;
-					} else {
-						path.velocityX = (point.x - user.character.position.x > 0 ? 1 : -1)
-								* xScale / yScale;
-						path.velocityY = point.y - user.character.position.y > 0 ? 1 : -1;
-					}
+					/*
+					 * float xScale = Math.abs(point.x -
+					 * user.character.position.x); float yScale =
+					 * Math.abs(point.y - user.character.position.y);
+					 * 
+					 * if (xScale > yScale) { // x변위가 더 크다. y속도에 감소값을 곱해준다.
+					 * path.velocityX = point.x - user.character.position.x > 0
+					 * ? 1 : -1; path.velocityY = (point.y -
+					 * user.character.position.y > 0 ? 1 : -1) * yScale /
+					 * xScale; } else { path.velocityX = (point.x -
+					 * user.character.position.x > 0 ? 1 : -1) * xScale /
+					 * yScale; path.velocityY = point.y -
+					 * user.character.position.y > 0 ? 1 : -1; }
+					 */
 
 					user.character.path.add(path);
 				}

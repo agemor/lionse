@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -74,12 +73,11 @@ public class Stage implements Renderable {
 				int y = startingY + (Terrain.HEIGHT / 2 * j);
 
 				// set terrain.
-				Terrain grid = new Terrain(x, y, stageEntry.terrainAltitude[i][j],
-						new Terrain.Index(j, i), null);
+				Terrain grid = new Terrain(x, y, stageEntry.terrainAltitude[i][j], new Terrain.Index(j, i), null);
 
 				// determine terrain graphics and altitude.
 				if (stageEntry.terrainType[i][j] == 0) {
-					grid.setTexture(Asset.game.get(Asset.Game.get("TERRAIN"))[0]);
+					grid.setTexture(Asset.Game.get("TERRAIN")[0]);
 				}
 
 				// add terrain.
@@ -112,8 +110,7 @@ public class Stage implements Renderable {
 		// render terrain
 		for (int i = 0; i < terrain.size(); i++) {
 			Terrain piece = terrain.get(i);
-			spriteBatch.draw(piece.getTexture(), piece.x, Display.HEIGHT - piece.y + piece.z
-					* SCALE_Z);
+			spriteBatch.draw(piece.getTexture(), piece.x, Display.HEIGHT - piece.y + piece.z * SCALE_Z);
 		}
 
 		// render units and characters.
@@ -159,31 +156,6 @@ public class Stage implements Renderable {
 			return (int) (r1.getPosition().y - r2.getPosition().y);
 		}
 
-	}
-
-	// define new structure class.
-	// point class will be used to sorting objects and holding coordinates.
-	public static class Point {
-
-		public float x;
-		public float y;
-		public float z;
-
-		// constructor
-		public Point(float x, float y, float z) {
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
-
-		public Point() {
-			x = y = z = 0;
-		}
-
-		@Override
-		public String toString() {
-			return x + "/" + y + "/" + z;
-		}
 	}
 
 }

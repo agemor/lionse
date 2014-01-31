@@ -1,16 +1,16 @@
 package lionse.client.stage.unit;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lionse.client.Display;
-import lionse.client.stage.Stage.Point;
-import lionse.client.stage.Stage;
+import lionse.client.stage.Point;
 import lionse.client.stage.Unit;
 
 public class Natural extends Unit {
 
 	public Point bottom;
 
-	public Natural(int graphic) {
+	public Natural(TextureRegion[] graphic) {
 		super(Unit.Type.OBJECT, graphic);
 
 		bottom = new Point();

@@ -106,6 +106,7 @@ public class User implements Runnable {
 				String header = buffer.split(H_L)[0];
 				// Server.trace(header);
 				// if unregistered, read message and register the client.
+			
 				if (!registered) {
 					// client sends session key.
 					if (header.equals(Header.SESSION)) {
