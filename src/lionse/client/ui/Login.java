@@ -5,59 +5,59 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lionse.client.Display;
-import lionse.client.Lionse;
+import lionse.client.Main;
 import lionse.client.net.Server;
 import lionse.client.net.ServerEvent;
 
 /**
- * ·Î±×ÀÎÀ» Ã³¸®ÇÏ´Â È­¸é
+ * ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ È­ï¿½ï¿½
  * 
- * @author ±èÇöÁØ
+ * @author ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
  */
 public class Login implements Screen, ServerEvent {
 
-	// ½Ã½ºÅÛ º¯¼ö
+	// ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public GL20 gl = Gdx.graphics.getGL20();
-	public Lionse lionse;
+	public Main lionse;
 
-	// ±×·¡ÇÈ ·£´õ·¯ º¯¼ö
+	// ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public SpriteBatch spriteBatch;
 
-	// ·Î±×ÀÎ UI
+	// ï¿½Î±ï¿½ï¿½ï¿½ UI
 	public LoginUI ui;
 
-	public Login(Lionse lionse) {
+	public Login(Main lionse) {
 		this.lionse = lionse;
 
 		ui = new LoginUI(this);
 		spriteBatch = new SpriteBatch();
 	}
 
-	// ·Î±×ÀÎ Ã¢ÀÌ È­¸é¿¡ ¶ç¿öÁ³À» ¶§ ½ÇÇà
+	// ï¿½Î±ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ È­ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void show() {
 
-		// ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+		// ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		Server.setServerEventListener(this);
 
-		// UI ÃÊ±âÈ­
+		// UI ï¿½Ê±ï¿½È­
 		ui.initialize();
 
 	}
 
-	// ·Î±×ÀÎ UIÀÇ ·£´õ¸µ ½ÇÇà
+	// ï¿½Î±ï¿½ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void render(float delta) {
-		// ÇÁ·¹ÀÓ¹öÆÛ ºñ¿ì±â
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		Gdx.gl.glClearColor(01f, 1f, 1f, 1);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// Ä«¸Þ¶ó ¾÷µ¥ÀÌÆ®
+		// Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 		spriteBatch.setProjectionMatrix(ui.component.getCamera().combined);
 		ui.update(delta);
 
-		// È­¸é¿¡ ·£´õ¸µ
+		// È­ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		spriteBatch.begin();
 		ui.draw(spriteBatch, delta);
 		spriteBatch.end();
@@ -77,7 +77,7 @@ public class Login implements Screen, ServerEvent {
 		if (succeed) {
 			Server.join();
 		} else {
-			ui.showAlert("       ·Î±×ÀÎ¿¡ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
+			ui.showAlert("       ï¿½Î±ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Login implements Screen, ServerEvent {
 
 	@Override
 	public void resize(int width, int height) {
-		// È­¸é ÇØ»óµµ¿¡ ¸ÂÃß¾î Á¤·Ä
+		// È­ï¿½ï¿½ ï¿½Ø»óµµ¿ï¿½ ï¿½ï¿½ï¿½ß¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 		ui.component.setViewport((float) Math.ceil(Display.SCALE * width), (float) Math.ceil(Display.SCALE * height), false);
 	}
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="UI.png">
+	<!-- Created with Adobe Flash CS6 version 12.0.2.529 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<SubTexture name="ALERT_BACKGROUND" x="0" y="402" width="501" height="65"/>
+	<SubTexture name="CANCEL_BUTTON_DOWN" x="744" y="451" width="142" height="83"/>
+	<SubTexture name="CANCEL_BUTTON_UP" x="602" y="437" width="142" height="83"/>
+	<SubTexture name="CHAT_BOX" x="602" y="0" width="302" height="202"/>
+	<SubTexture name="CHAT_INPUT" x="0" y="467" width="602" height="42"/>
+	<SubTexture name="LOADING" x="904" y="0" width="101" height="100"/>
+	<SubTexture name="LOGIN_BUTTON_DOWN" x="602" y="354" width="142" height="83"/>
+	<SubTexture name="LOGIN_BUTTON_UP" x="755" y="285" width="142" height="83"/>
+	<SubTexture name="MENU_ITEM_BUTTON_DOWN" x="366" y="509" width="122" height="62"/>
+	<SubTexture name="MENU_ITEM_BUTTON_UP" x="886" y="388" width="122" height="62"/>
+	<SubTexture name="MENU_MATRIAL_BUTTON_DOWN" x="244" y="509" width="122" height="62"/>
+	<SubTexture name="MENU_MATRIAL_BUTTON_UP" x="897" y="326" width="122" height="62"/>
+	<SubTexture name="MENU_MENU_BUTTON_DOWN" x="886" y="512" width="122" height="62"/>
+	<SubTexture name="MENU_MENU_BUTTON_UP" x="886" y="450" width="122" height="62"/>
+	<SubTexture name="MENU_MY_INFO_BUTTON_DOWN" x="0" y="509" width="122" height="62"/>
+	<SubTexture name="MENU_MY_INFO_BUTTON_UP" x="898" y="202" width="122" height="62"/>
+	<SubTexture name="MENU_PANNEL" x="0" y="0" width="602" height="402"/>
+	<SubTexture name="MENU_UNIT_BUTTON_DOWN" x="122" y="509" width="122" height="62"/>
+	<SubTexture name="MENU_UNIT_BUTTON_UP" x="898" y="264" width="122" height="62"/>
+	<SubTexture name="MY_PAGE_EQUIPMENT_SLOT" x="794" y="534" width="72" height="73"/>
+	<SubTexture name="MY_PAGE_UNIT_SLOT" x="904" y="100" width="92" height="93"/>
+	<SubTexture name="OPEN_CHAT_BUTTON_DOWN" x="590" y="520" width="102" height="62"/>
+	<SubTexture name="OPEN_CHAT_BUTTON_UP" x="488" y="509" width="102" height="62"/>
+	<SubTexture name="OPEN_MENU_BUTTON_DOWN" x="0" y="571" width="102" height="62"/>
+	<SubTexture name="OPEN_MENU_BUTTON_UP" x="692" y="534" width="102" height="62"/>
+	<SubTexture name="REGISTER_BUTTON_DOWN" x="755" y="202" width="143" height="83"/>
+	<SubTexture name="REGISTER_BUTTON_UP" x="744" y="368" width="142" height="83"/>
+	<SubTexture name="TALK_BALLOON" x="102" y="571" width="170" height="24"/>
+	<SubTexture name="TALK_BALLOON_KNOB" x="1005" y="0" width="15" height="31"/>
+	<SubTexture name="TEXT_FIELD_POINTER" x="1020" y="0" width="4" height="40"/>
+	<SubTexture name="TOUCHPAD_BACKGROUND" x="602" y="202" width="153" height="152"/>
+	<SubTexture name="TOUCHPAD_KNOB" x="501" y="402" width="61" height="60"/>
+</TextureAtlas>

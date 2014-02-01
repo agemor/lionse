@@ -18,12 +18,16 @@ public class Launcher {
 	public static final int[] GALAXYS3 = { 800, 1280 };
 	public static final int[] OPTIMUS_VIEW = { 800, 1280 };
 
-	public static int[][] DEVICE = { IPHONE3G, IPHONE4G, IPAD, GALAXYS2, GALAXYNOTE, OPTIMUSLTE, VEGALTE, GALAXYS3, OPTIMUS_VIEW };
+	public static int[][] DEVICE = { IPHONE3G, IPHONE4G, IPAD, GALAXYS2, GALAXYNOTE, OPTIMUSLTE, VEGALTE, GALAXYS3,
+			OPTIMUS_VIEW };
 
 	public static int[] device = DEVICE[3];
 
 	public static void main(String[] args) {
-		new LwjglApplication(new Lionse(), "Lionse", (int) device[1], (int) device[0], true);
+
+		Main main = new Main();
+
+		new LwjglApplication(main, "Lionse", (int) device[1], (int) device[0], true);
 	}
 
 }

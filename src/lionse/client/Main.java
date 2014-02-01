@@ -8,13 +8,15 @@ import lionse.client.stage.World;
 import lionse.client.ui.Login;
 import lionse.client.ui.Register;
 
-public class Lionse extends Game {
+public class Main extends Game {
+
+	public static Main self;
 
 	public World world;
 	public Login login;
 	public Register register;
 
-	public Lionse() {
+	public Main() {
 
 	}
 
@@ -36,5 +38,4 @@ public class Lionse extends Game {
 		setScreen(login);
 
 	}
-
 }

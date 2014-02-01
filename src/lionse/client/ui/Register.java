@@ -7,59 +7,59 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import lionse.client.Display;
-import lionse.client.Lionse;
+import lionse.client.Main;
 import lionse.client.net.Server;
 import lionse.client.net.ServerEvent;
 
 /**
- * È¸¿ø°¡ÀÔ ÀÔ·ÂÀ» Ã³¸®ÇÏ´Â È­¸é
+ * È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ È­ï¿½ï¿½
  * 
- * @author ±èÇöÁØ
+ * @author ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
  */
 
 public class Register extends ChangeListener implements Screen, ServerEvent {
 
-	// ½Ã½ºÅÛ º¯¼ö
+	// ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public GL20 gl = Gdx.graphics.getGL20();
-	public Lionse lionse;
+	public Main lionse;
 
-	// ±×·¡ÇÈ ·£´õ·¯ º¯¼ö
+	// ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public SpriteBatch spriteBatch;
 
-	// È¸¿ø°¡ÀÔ UI
+	// È¸ï¿½ï¿½ï¿½ï¿½ UI
 	public RegisterUI ui;
 
-	public Register(Lionse lionse) {
+	public Register(Main lionse) {
 		this.lionse = lionse;
 
 		ui = new RegisterUI(this);
 		spriteBatch = new SpriteBatch();
 	}
 
-	// È¸¿ø°¡ÀÔ Ã¢ÀÌ È­¸é¿¡ ¶ç¿öÁ³À» ¶§ ½ÇÇà
+	// È¸ï¿½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ È­ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void show() {
-		// ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+		// ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		Server.setServerEventListener(this);
 
-		// UI ÃÊ±âÈ­
+		// UI ï¿½Ê±ï¿½È­
 		ui.initialize();
 
 	}
 
-	// È­¸é ·£´õ¸µ
+	// È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void render(float delta) {
-		// ÇÁ·¹ÀÓ¹öÆÛ ºñ¿ì±â
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		Gdx.gl.glClearColor(01f, 1f, 1f, 1);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// Ä«¸Þ¶ó ¾÷µ¥ÀÌÆ®
+		// Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 		spriteBatch.setProjectionMatrix(ui.component.getCamera().combined);
 		ui.update(delta);
 
-		// È­¸é¿¡ ·£´õ¸µ
+		// È­ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		spriteBatch.begin();
 		ui.draw(spriteBatch, delta);
 		spriteBatch.end();
@@ -75,15 +75,15 @@ public class Register extends ChangeListener implements Screen, ServerEvent {
 		ui.loading = false;
 		if (succeed) {
 			lionse.setScreen(lionse.login);
-			lionse.login.ui.showAlert("   È¸¿ø °¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!");
+			lionse.login.ui.showAlert("   È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½Ï´ï¿½!");
 		} else {
-			ui.showAlert("¾ÆÀÌµð È¤Àº Ä³¸¯ÅÍ¸íÀÌ Áßº¹ÀÔ´Ï´Ù.");
+			ui.showAlert("ï¿½ï¿½ï¿½Ìµï¿½ È¤ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ô´Ï´ï¿½.");
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// È­¸é ÇØ»óµµ¿¡ ¸ÂÃß¾î Á¤·Ä
+		// È­ï¿½ï¿½ ï¿½Ø»óµµ¿ï¿½ ï¿½ï¿½ï¿½ß¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 		ui.component.setViewport((float) Math.ceil(Display.SCALE * width), (float) Math.ceil(Display.SCALE * height), false);
 	}
 

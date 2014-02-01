@@ -20,25 +20,25 @@ import lionse.client.debug.Debugger;
 import lionse.client.net.Server;
 
 /**
- * ·Î±×ÀÎ È­¸é¿¡¼­ UI Ã³¸® Å¬·¡½º
+ * ï¿½Î±ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ UI Ã³ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
  * 
- * @author ±èÇöÁØ
+ * @author ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
  */
 public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 
-	// »óÀ§ Å¬·¡½º ÂüÁ¶
+	// ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public Login login;
 
-	// ÀÔ·Â °ü·Ã º¯¼ö
+	// ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public InputMultiplexer multiplexer;
 
-	// UI ÅØ½ºÃ³
+	// UI ï¿½Ø½ï¿½Ã³
 	public Image background;
 	public ButtonStyle loginButtonStyle;
 	public ButtonStyle registerButtonStyle;
 
-	// ·Î±×ÀÎ ÄÄÆ÷³ÍÆ®
+	// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	public Stage component;
 
 	public TextField ID;
@@ -46,25 +46,25 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 	public Button LOGIN;
 	public Button REGISTER;
 
-	// ÀÔ·Â Ã³¸®
+	// ï¿½Ô·ï¿½ Ã³ï¿½ï¿½
 	public float stateTime = 0;
 	public int backKeyPressedCount = 0;
 	public boolean loading = false;
 	public boolean alert = false;
-	public String alertMessage = "Å×½ºÆ® ¸Þ½ÃÁö";
+	public String alertMessage = "ï¿½×½ï¿½Æ® ï¿½Þ½ï¿½ï¿½ï¿½";
 
-	// ÅØ½ºÆ® ÇÊµå ¹öÆÛ
+	// ï¿½Ø½ï¿½Æ® ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½
 	private String id_buffer = "";
 	private String password_buffer = "";
 
-	// »ý¼ºÀÚ
+	// ï¿½ï¿½ï¿½ï¿½
 	public LoginUI(Login login) {
 		this.login = login;
 
-		// UI °øÅë ÀÎ¼ö ÃÊ±âÈ­
+		// UI ï¿½ï¿½ï¿½ï¿½ ï¿½Î¼ï¿½ ï¿½Ê±ï¿½È­
 		background = new Image(Asset.UI.get("LOGIN"));
 
-		// ¹öÆ° ½ºÅ¸ÀÏ ¼³Á¤
+		// ï¿½ï¿½Æ° ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		loginButtonStyle = new ButtonStyle();
 		loginButtonStyle.up = new TextureRegionDrawable(Asset.UI.get("LOGIN_BUTTON_UP"));
 		loginButtonStyle.down = new TextureRegionDrawable(Asset.UI.get("LOGIN_BUTTON_DOWN"));
@@ -73,21 +73,21 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		registerButtonStyle.up = new TextureRegionDrawable(Asset.UI.get("REGISTER_BUTTON_UP"));
 		registerButtonStyle.down = new TextureRegionDrawable(Asset.UI.get("REGISTER_BUTTON_DOWN"));
 
-		// ÀÔ·Â°ú ÄÄÆ÷³ÍÆ® ÃÊ±âÈ­
+		// ï¿½Ô·Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­
 		multiplexer = new InputMultiplexer();
 		component = new Stage();
 
-		// ÄÄÆ÷³ÍÆ® ±¸¼º ¿ä¼Ò ÃÊ±âÈ­
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 		ID = new TextField("", Display.TEXTFIELD_STYLE);
 		PASSWORD = new TextField("", Display.TEXTFIELD_STYLE);
 		LOGIN = new Button(loginButtonStyle);
 		REGISTER = new Button(registerButtonStyle);
 
-		// ±¸¼º ¿ä¼Ò ¼³Á¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		ID.setOnscreenKeyboard(new VirtualKeyboardHolder());
 		PASSWORD.setOnscreenKeyboard(new VirtualKeyboardHolder());
 
-		PASSWORD.setPasswordCharacter('¡Ü');
+		PASSWORD.setPasswordCharacter('â—');
 		PASSWORD.setPasswordMode(true);
 
 		REGISTER.setPosition(600, 250);
@@ -101,7 +101,7 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		LOGIN.addListener(this);
 		REGISTER.addListener(this);
 
-		// ÄÄÆ÷³ÍÆ®¿¡ Ãß°¡
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
 		component.addActor(background);
 		component.addActor(ID);
 		component.addActor(PASSWORD);
@@ -109,66 +109,66 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		component.addActor(REGISTER);
 	}
 
-	// ·Î±×ÀÎ UI ÃÊ±âÈ­. ¸ÖÆ¼ÇÃ·º¼­ ¼³Á¤ µîÀ» ÇÔ
+	// ï¿½Î±ï¿½ï¿½ï¿½ UI ï¿½Ê±ï¿½È­. ï¿½ï¿½Æ¼ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	@Override
 	public void initialize() {
-		// ¸ÖÆ¼ÇÃ·º¼­ ¼³Á¤
+		// ï¿½ï¿½Æ¼ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		multiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(multiplexer);
 
-		// °¡»ó Å°º¸µå ¼³Á¤
+		// ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		VirtualKeyboard.setEventListener(this);
 
 		multiplexer.addProcessor(this);
 		multiplexer.addProcessor(component);
 	}
 
-	// ¹öÆ°ÀÌ ´­·ÈÀ» ¶§ ½ÇÇàµÊ
+	// ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void changed(ChangeEvent event, Actor actor) {
 
-		// ·Î±×ÀÎ ¹öÆ°À» ´­·¶À» ¶§
+		// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		if (actor == LOGIN) {
 			loading = true;
 			Debugger.log(ID.getText() + "/" + PASSWORD.getText());
 			Server.login(ID.getText().trim(), PASSWORD.getText().trim());
 
-			// È¸¿ø°¡ÀÔ ¹öÆ°À» ´­·¶À» ¶§
+			// È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		} else if (actor == REGISTER) {
 			login.lionse.setScreen(login.lionse.register);
 		}
 
 	}
 
-	// °æ°í È¤Àº ¿À·ù ¸Þ½ÃÁö ¶ç¿ì±â
+	// ï¿½ï¿½ï¿½ È¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void showAlert(String message) {
 		alert = true;
 		alertMessage = message;
 	}
 
-	// µÚ·Î°¡±â Å°(Back-Key) ¸¦ Ã³¸®
+	// ï¿½Ú·Î°ï¿½ï¿½ï¿½ Å°(Back-Key) ï¿½ï¿½ Ã³ï¿½ï¿½
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.BACK || keycode == Keys.F1) {
 
-			// µÚ·Î°¡±â Å°¸¦ ¿¬¼Ó ¼¼ ¹ø ´©¸£¸é °ÔÀÓ Á¾·á
+			// ï¿½Ú·Î°ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (backKeyPressedCount > 0 && alert) {
 				System.exit(0);
 			}
 
-			// °¡»ó Å°º¸µå°¡ ÀÖ´Â »óÅÂ¿¡¼­ µÚ·Î°¡±â Å°°¡ ´­¸®¸é Å°º¸µå ²ô±â
+			// ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½å°¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ ï¿½Ú·Î°ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (VirtualKeyboard.display) {
 				VirtualKeyboard.close();
 				backKeyPressedCount = 0;
 			} else {
-				showAlert("    ÇÑ ¹ø ´õ ´©¸£¸é Á¾·áÇÕ´Ï´Ù.");
+				showAlert("    ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
 				backKeyPressedCount++;
 			}
 		}
 		return false;
 	}
 
-	// UI ·£´õ¸µ ¸í·ÉÀÌ ³»·Á¿À±â Àü »óÅÂ ¾÷µ¥ÀÌÆ® ¸Þ¼­µå
+	// UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Þ¼ï¿½ï¿½ï¿½
 	@Override
 	public void update(float delta) {
 		component.act(delta);
@@ -176,7 +176,7 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 
 	}
 
-	// UI ·£´õ¸µ
+	// UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void draw(SpriteBatch spriteBatch, float delta) {
 
@@ -199,21 +199,21 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		}
 	}
 
-	// °¡»ó Å°º¸µåÀÇ ¹öÆ°ÀÌ ´­·ÈÀ» ¶§
+	// ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	@Override
 	public void keyTyped(VirtualKeyButton key) {
 
 		if (loading || alert)
 			return;
 
-		// ¾ÆÀÌµð ÇÊµå¿¡ Æ÷Ä¿½º°¡ ÀÖÀ» °æ¿ì
+		// ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Êµå¿¡ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		if (component.getKeyboardFocus() == ID) {
 			id_buffer = VirtualKeyboard.addBuffer(id_buffer, key);
 			String text = VirtualKeyboard.mix(id_buffer);
 			ID.setText(text);
 			ID.setCursorPosition(text.length() > 0 ? text.length() : 0);
 
-			// ÆÐ½º¿öµå ÇÊµå¿¡ Æ÷Ä¿½º°¡ ÀÖÀ» °æ¿ì
+			// ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµå¿¡ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		} else {
 
 			password_buffer = VirtualKeyboard.addBuffer(password_buffer, key);
@@ -221,7 +221,7 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 			PASSWORD.setText(text);
 			PASSWORD.setCursorPosition(text.length() > 0 ? text.length() : 0);
 
-			// ÆÐ½º¿öµå ÇÊµå ÀÔ·Â Áß ¿£ÅÍ°¡ ´­¸®¸é ·Î±×ÀÎ Ã³¸®
+			// ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 			if (key.letter.equals("ENTER")) {
 				loading = true;
 				Debugger.log(ID.getText() + "/" + PASSWORD.getText());
@@ -234,7 +234,7 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 	public void dispose() {
 	}
 
-	// È­¸é ÅÍÄ¡´Ù¿î½Ã Å°º¸µå¿¡ ÀÔ·Â
+	// È­ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ù¿ï¿½ï¿½ Å°ï¿½ï¿½ï¿½å¿¡ ï¿½Ô·ï¿½
 	private Vector2 screenCoords = new Vector2();
 	private Vector2 stageCoords;
 
@@ -254,7 +254,7 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		return false;
 	}
 
-	// È­¸é ÅÍÄ¡¾÷½Ã Å°º¸µå¿¡ ÀÔ·Â
+	// È­ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½å¿¡ ï¿½Ô·ï¿½
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
@@ -265,7 +265,7 @@ public class LoginUI extends ChangeListener implements UI, VirtualKeyEvent {
 		return false;
 	}
 
-	// *********************** »ç¿ëµÇÁö ¾Ê´Â ¸Þ¼­µå ***********************
+	// *********************** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ***********************
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
